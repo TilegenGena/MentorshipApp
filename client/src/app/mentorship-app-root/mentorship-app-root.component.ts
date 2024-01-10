@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './mentorship-app-root.component.html',
   styleUrls: ['./mentorship-app-root.component.scss'],
 })
-export class MentorshipAppRootComponent {
-
-}
+export class MentorshipAppRootComponent {}
