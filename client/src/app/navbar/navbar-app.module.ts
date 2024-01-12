@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MentorshipAppRootComponent } from '../mentorship-app-root.component';
 import {  MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { NavbarAppComponent } from './navbar-app/navbar-app.component';
 
 @NgModule({
-  declarations: [MentorshipAppRootComponent],
+  declarations: [NavbarAppComponent],
   imports: [
     CommonModule,
     MatToolbarModule,
     MatIconModule,
   ], 
   exports: [
-    MentorshipAppRootComponent
+    NavbarAppComponent
   ]
 })
 export class MentorshipAppModule { }
