@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdviceWallComponent } from './advice-wall/advice-wall.component';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice-wall.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -10,6 +10,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
