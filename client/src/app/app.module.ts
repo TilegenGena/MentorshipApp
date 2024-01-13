@@ -4,23 +4,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MentorshipAppModule } from './navbar/navbar-app.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { AdviceWallComponent } from './advice-wall/advice-wall.component';
+import { NavbarAppModule } from './navbar/navbar-app.module';
+import { ComponentsModule } from './components/components.module';
+import { HttpClientModule } from '@angular/common/http';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    AdviceWallComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule, 
-    MentorshipAppModule,
+    BrowserAnimationsModule,
+    DashboardModule,
+    NavbarAppModule,
+    ComponentsModule,
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
