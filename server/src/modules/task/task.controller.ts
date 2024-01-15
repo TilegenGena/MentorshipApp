@@ -17,7 +17,7 @@ export class TaskController {
 
   @Get('all-task')
   async findAll(): Promise<TaskInterface[]> {
-    return this.taskService.getAllTask();
+    return this.taskService.getAllTasks();
   }
 
   @Get(':id')
@@ -25,7 +25,7 @@ export class TaskController {
     return this.taskService.getTaskById(id);
   }
 
-  @Post('create')
+  @Post('task')
   async createTask(@Body() taskData: Task): Promise<Task> {
     return this.taskService.createTask(taskData);
   }
