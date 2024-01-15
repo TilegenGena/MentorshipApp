@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from './task.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { TaskDTO as TaskInterface } from './task.interface';
+import { TaskDTO } from './task.interface';
 
 @Injectable()
 export class TaskService {
@@ -14,7 +14,7 @@ export class TaskService {
     return this.taskModel.create(taskData);
   }
 
-  async getAllTask(): Promise<TaskInterface[]> {
+  async getAllTasks(): Promise<TaskDTO[]> {
     return this.taskModel.findAll();
   }
 

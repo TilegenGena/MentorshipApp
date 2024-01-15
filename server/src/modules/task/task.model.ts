@@ -35,30 +35,30 @@ export class Task extends Model<Task> {
     type: DataType.STRING,
     allowNull: false,
   })
-  name: string;
+  title: string;
 
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  mentee_id: number;
+  menteeId: number;
 
   @Column({
     type: DataType.TEXT,
     allowNull: false,
   })
-  task_description: string;
+  description: string;
 
   @Column({
     type: Task.TASK_STATUS,
     allowNull: false,
   })
-  task_status: string;
+  status: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
   })
-  due_date: Date;
+  dueDate: Date;
 }
