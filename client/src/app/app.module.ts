@@ -4,23 +4,35 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavbarAppModule } from './navbar/navbar-app.module';
-import { ComponentsModule } from './components/components.module';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
-import { DashboardModule } from './dashboard/dashboard.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { TaskListComponent } from './components/task-list/task-list/task-list.component';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
+import { NavbarAppComponent } from './navbar/navbar-app/navbar-app.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    TaskListComponent,
+    DashboardComponent,
+    NavbarAppComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    DashboardModule,
-    NavbarAppModule,
-    ComponentsModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    NgbModule,
+    CommonModule,
+    MatToolbarModule,
+    MatIconModule,
   ],
-  providers: [],
+  providers: [NgbActiveModal],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
