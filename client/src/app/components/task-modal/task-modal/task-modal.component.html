@@ -1,0 +1,81 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add new task</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.close('Cross click')"
+  ></button>
+</div>
+<form [formGroup]="taskForm" (ngSubmit)="submitForm()" style="padding: 10px">
+  <div class="form-group">
+    <label for="name">Title</label>
+    <input
+      type="text"
+      id="title"
+      class="form-control"
+      formControlName="title"
+    />
+    <div
+      *ngIf="
+        taskForm.controls['title'].invalid && taskForm.controls['title'].touched
+      "
+      class="alert alert-danger"
+    >
+      Title is required.
+    </div>
+    <label for="description">Description</label>
+    <input
+      type="text"
+      id="description"
+      class="form-control"
+      formControlName="description"
+    />
+    <div
+      *ngIf="
+        taskForm.controls['description'].invalid &&
+        taskForm.controls['description'].touched
+      "
+      class="alert alert-danger"
+    >
+      Description is required.
+    </div>
+    <label for="status">Status</label>
+    <input
+      type="text"
+      id="status"
+      class="form-control"
+      formControlName="status"
+    />
+    <div
+      *ngIf="
+        taskForm.controls['status'].invalid &&
+        taskForm.controls['status'].touched
+      "
+      class="alert alert-danger"
+    >
+      Status is required.
+    </div>
+    <label for="dueDate">Due Date</label>
+    <input
+      type="text"
+      id="dueDate"
+      class="form-control"
+      formControlName="dueDate"
+    />
+    <div
+      *ngIf="
+        taskForm.controls['dueDate'].invalid &&
+        taskForm.controls['dueDate'].touched
+      "
+      class="alert alert-danger"
+    >
+      Due date is required.
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="!taskForm.valid">
+      Save
+    </button>
+  </div>
+</form>

@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { TaskListComponent } from './components/task-list/task-list/task-list.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { NavbarAppComponent } from './navbar/navbar-app/navbar-app.component';
+import { TaskModalComponent } from './components/task-modal/task-modal/task-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NavbarAppComponent } from './navbar/navbar-app/navbar-app.component';
     TaskListComponent,
     DashboardComponent,
     NavbarAppComponent,
+    TaskModalComponent,
   ],
   imports: [
     BrowserModule,
