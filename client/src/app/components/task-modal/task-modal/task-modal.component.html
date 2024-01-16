@@ -4,7 +4,7 @@
     type="button"
     class="btn-close"
     aria-label="Close"
-    (click)="activeModal.close('Cross click')"
+    (click)="activeModal.close()"
   ></button>
 </div>
 <form [formGroup]="taskForm" (ngSubmit)="submitForm()" style="padding: 10px">
@@ -41,12 +41,12 @@
       Description is required.
     </div>
     <label for="status">Status</label>
-    <input
-      type="text"
-      id="status"
-      class="form-control"
-      formControlName="status"
-    />
+    <select id="status" class="form-control" formControlName="status">
+      <option value="To Do" selected>To Do</option>
+      <option value="In Progress">In Progress</option>
+      <option value="Stuck">Stuck</option>
+      <option value="Done">Done</option>
+    </select>
     <div
       *ngIf="
         taskForm.controls['status'].invalid &&
@@ -57,12 +57,18 @@
       Status is required.
     </div>
     <label for="dueDate">Due Date</label>
-    <input
-      type="text"
-      id="dueDate"
-      class="form-control"
-      formControlName="dueDate"
-    />
+    <div style="display: flex; align-items: center">
+      <input
+        matInput
+        [matDatepicker]="picker"
+        id="dueDate"
+        class="form-control"
+        formControlName="dueDate"
+        style="flex: 1"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    </div>
+    <mat-datepicker #picker></mat-datepicker>
     <div
       *ngIf="
         taskForm.controls['dueDate'].invalid &&
