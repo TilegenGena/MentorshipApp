@@ -1,7 +1,8 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ITask } from 'src/app/interfaces/task';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TaskDTO } from 'src/app/interfaces/task';
+import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-task-modal',
@@ -9,12 +10,17 @@ import { ITask } from 'src/app/interfaces/task';
   styleUrls: ['./task-modal.component.scss'],
 })
 export class TaskModalComponent {
-  @Input() task!: ITask;
+  @Input() task!: TaskDTO;
   taskForm!: FormGroup;
-  constructor(protected activeModal: NgbActiveModal) {}
+  submitting!: Promise<void>;
+  constructor(
+    protected activeModal: NgbActiveModal,
+    private taskService: TaskService
+  ) {}
 
   ngOnInit() {
     this.taskForm = new FormGroup({
+      id: new FormControl(this.task ? this.task.id : null),
       title: new FormControl(
         this.task ? this.task.title : '',
         Validators.required
@@ -34,9 +40,21 @@ export class TaskModalComponent {
     });
   }
 
-  submitForm() {
+  async submitForm() {
     if (this.taskForm.valid) {
-      this.activeModal.close(this.taskForm.value);
+      if (!this.taskForm.value.id) {
+        (await this.taskService.createTask(this.taskForm.value))
+          .toPromise()
+          .then(() => {
+            this.activeModal.close(this.taskForm.value);
+          });
+      } else {
+        (await this.taskService.editTask(this.taskForm.value))
+          .toPromise()
+          .then(() => {
+            this.activeModal.close(this.taskForm.value);
+          });
+      }
     }
   }
 }

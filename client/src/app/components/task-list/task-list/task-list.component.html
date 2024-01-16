@@ -3,3 +3,44 @@
     Add Task
   </button>
 </div>
+
+<div class="container" style="padding: 10px">
+  <div class="row">
+    <div *ngFor="let task of tasks" class="col-sm-3">
+      <div
+        class="card mb-3"
+        [ngClass]="{
+          'bg-light': task.status == 'To Do',
+          'bg-warning': task.status == 'In Progress',
+          'bg-danger': task.status == 'Stuck',
+          'bg-success': task.status == 'Done',
+          'text-white': ['Done', 'Stuck', ].includes(task.status),
+        }"
+        style="max-width: 18rem"
+      >
+        <div class="card-body">
+          <h5 class="card-title"><b>Title: </b>{{ task.title }}</h5>
+          <p class="card-text"><b>Description: </b>{{ task.description }}</p>
+          <p class="card-text"><b>Task status: </b>{{ task.status }}</p>
+          <p class="card-text"><b>Due Date: </b>{{ task.dueDate }}</p>
+          <button
+            (click)="deleteTask(task.id)"
+            mat-icon-button
+            class="example-icon"
+            aria-label="Example icon-button with heart icon"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button
+            (click)="editTask(task)"
+            mat-icon-button
+            class="example-icon"
+            aria-label="Example icon-button with heart icon"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

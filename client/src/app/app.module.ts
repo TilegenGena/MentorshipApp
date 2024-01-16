@@ -14,6 +14,15 @@ import { TaskListComponent } from './components/task-list/task-list/task-list.co
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { NavbarAppComponent } from './navbar/navbar-app/navbar-app.component';
 import { TaskModalComponent } from './components/task-modal/task-modal/task-modal.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -33,6 +42,15 @@ import { TaskModalComponent } from './components/task-modal/task-modal/task-moda
     CommonModule,
     MatToolbarModule,
     MatIconModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatSelectModule,
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],

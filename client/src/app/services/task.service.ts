@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ITask } from '../interfaces/task';
+import { TaskDTO } from '../interfaces/task';
 
 @Injectable({
   providedIn: 'root',
@@ -9,23 +9,23 @@ import { ITask } from '../interfaces/task';
 export class TaskService {
   constructor(private httpService: HttpClient) {}
 
-  async getTasks(): Promise<Observable<ITask[]>> {
-    return this.httpService.get<ITask[]>('task/all-task');
+  async getTasks(): Promise<Observable<TaskDTO[]>> {
+    return this.httpService.get<TaskDTO[]>('task/all-task');
   }
 
-  async getTask(id: number): Promise<Observable<ITask>> {
-    return this.httpService.get<ITask>(`task/${id}`);
+  async getTask(id: number): Promise<Observable<TaskDTO>> {
+    return this.httpService.get<TaskDTO>(`task/${id}`);
   }
 
-  async createTask(param: ITask): Promise<Observable<ITask>> {
-    return this.httpService.post<ITask>('task', param);
+  async createTask(param: TaskDTO): Promise<Observable<TaskDTO>> {
+    return this.httpService.post<TaskDTO>('task/task', param);
   }
 
-  async editTask(param: ITask): Promise<Observable<ITask>> {
-    return this.httpService.put<ITask>(`task/${param.id}`, param);
+  async editTask(param: TaskDTO): Promise<Observable<TaskDTO>> {
+    return this.httpService.put<TaskDTO>(`task/${param.id}`, param);
   }
 
-  async deleteTask(id: number): Promise<Observable<ITask>> {
-    return this.httpService.delete<ITask>(`tasks/${id}`);
+  async deleteTask(id: number): Promise<Observable<TaskDTO>> {
+    return this.httpService.delete<TaskDTO>(`task/${id}`);
   }
 }

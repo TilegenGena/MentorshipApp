@@ -11,6 +11,9 @@ export class TaskService {
   ) {}
 
   async createTask(taskData: Task): Promise<Task> {
+    taskData.menteeId = 1;
+    taskData.createdAt = new Date();
+    taskData.updatedAt = new Date();
     return this.taskModel.create(taskData);
   }
 
