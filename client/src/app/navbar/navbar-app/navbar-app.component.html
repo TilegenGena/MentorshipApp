@@ -1,17 +1,27 @@
-<mat-toolbar color="primary">
-  <span>Navbar App</span>
-  <nav>
-    <a class="btn btn-outline-primary" routerLink="/dashboard"> Dashboard</a>
-    <a class="btn btn-outline-primary" routerLink="/advice-wall">
-      Advice Wall</a
-    >
-  </nav>
-  <span class="example-spacer"></span>
-  <button
-    mat-icon-button
-    class="example-icon notifications-icon"
-    aria-label="Example icon-button with heart icon"
-  >
-    <mat-icon>notifications</mat-icon>
-  </button>
-</mat-toolbar>
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="" alt="Logo" width="30" height="24">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/dashboard">Dashboard</a>
+        <a class="nav-link" href="/advice-wall">Advice Wall</a>
+        <a class="nav-link" href="/mentors">Mentors</a>
+      </div>
+      <div>
+        <button mat-icon-button class="btn btn-action">
+          <mat-icon>notifications</mat-icon>
+        </button>
+        <button type="button" class="btn btn-action">John Doe</button>
+        <button type="button" class="btn btn-action">
+          <mat-icon mat-icon-button>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
