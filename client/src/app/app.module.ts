@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MentorsComponent } from './components/mentors/mentors/mentors.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { MatSelectModule } from '@angular/material/select';
     DashboardComponent,
     NavbarAppComponent,
     TaskModalComponent,
+    MentorsComponent,
   ],
   imports: [
     BrowserModule,
