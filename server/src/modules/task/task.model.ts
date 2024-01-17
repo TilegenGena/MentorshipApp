@@ -12,12 +12,12 @@ import { User } from '../user/user.model';
   timestamps: true,
 })
 export class Task extends Model<Task> {
-  public static TO_DO = 'To Do';
-  public static IN_PROGRESS = 'In Progress';
-  public static STUCK = 'Stuck';
-  public static DONE = 'Done';
+  private static TO_DO = 'To Do';
+  private static IN_PROGRESS = 'In Progress';
+  private static STUCK = 'Stuck';
+  private static DONE = 'Done';
 
-  public static TASK_STATUS = DataType.ENUM(
+  private static TASK_STATUS = DataType.ENUM(
     Task.TO_DO,
     Task.IN_PROGRESS,
     Task.STUCK,
@@ -61,4 +61,9 @@ export class Task extends Model<Task> {
     allowNull: false,
   })
   dueDate: Date;
+
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  archived: boolean;
 }

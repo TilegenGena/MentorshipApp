@@ -3,7 +3,7 @@ import { User } from './user.model';
 
 @Injectable()
 export class UserService {
-  findAllUsers(): Promise<User[]> {
-    return User.findAll();
+  getAllMentors(): Promise<User[]> {
+    return User.findAll({ where: { userType: 'Mentor' } });
   }
 }
