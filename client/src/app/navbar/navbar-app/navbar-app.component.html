@@ -1,12 +1,23 @@
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      <img src="" alt="Logo" width="30" height="24">
+      <img src="" alt="Logo" width="30" height="24" />
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <mat-icon>menu</mat-icon>
     </button>
-    <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
+    <div
+      class="collapse navbar-collapse justify-content-between"
+      id="navbarNavAltMarkup"
+    >
       <div class="navbar-nav">
         <a class="nav-link" href="/dashboard">Dashboard</a>
         <a class="nav-link" href="/advice-wall">Advice Wall</a>
@@ -16,7 +27,9 @@
         <button mat-icon-button class="btn btn-action">
           <mat-icon>notifications</mat-icon>
         </button>
-        <button type="button" class="btn btn-action">John Doe</button>
+        <button type="button" class="btn btn-action" (click)="editUser()">
+          {{ user?.firstName }} {{ user?.lastName }}
+        </button>
         <button type="button" class="btn btn-action">
           <mat-icon mat-icon-button>logout</mat-icon>
         </button>
@@ -24,4 +37,3 @@
     </div>
   </div>
 </nav>
-

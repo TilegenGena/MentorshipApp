@@ -26,6 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MentorsComponent } from './components/mentors/mentors/mentors.component';
 import { MatTableModule } from '@angular/material/table';
 import { MentorDetailsModalComponent } from './mentor-details-modal/mentor-details-modal.component';
+import { UserModalComponent } from './components/user-modal/user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { MentorDetailsModalComponent } from './mentor-details-modal/mentor-detai
     TaskModalComponent,
     MentorsComponent,
     MentorDetailsModalComponent,
+    UserModalComponent,
   ],
   imports: [
     BrowserModule,
