@@ -1,10 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { IMentor } from 'src/app/interfaces/mentor';
+import { MentorDetailsModalComponent } from 'src/app/mentor-details-modal/mentor-details-modal.component';
+import { MentorService } from 'src/app/services/mentor.service';
 
 @Component({
   selector: 'app-mentors',
   templateUrl: './mentors.component.html',
-  styleUrls: ['./mentors.component.scss']
+  styleUrls: ['./mentors.component.scss'],
 })
-export class MentorsComponent {
+export class MentorsComponent implements OnInit {
+  displayedColumns: string[] = ['name', 'action'];
+  mentors!: IMentor[];
 
+  constructor(
+    private mentorService: MentorService,
+    private ngbModal: NgbModal
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    (await this.mentorService.getMentors()).toPromise().then((mentors) => {
+      if (mentors) {
+        this.mentors = mentors;
+      }
+    });
+  }
+
+  seeDetails(mentor: IMentor) {
+    const modalRef = this.ngbModal.open(MentorDetailsModalComponent, {
+      backdrop: 'static',
+      keyboard: false,
+    });
+    modalRef.componentInstance.mentor = mentor;
+  }
 }

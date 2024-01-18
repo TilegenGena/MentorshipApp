@@ -24,6 +24,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MentorsComponent } from './components/mentors/mentors/mentors.component';
+import { MatTableModule } from '@angular/material/table';
+import { MentorDetailsModalComponent } from './mentor-details-modal/mentor-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { MentorsComponent } from './components/mentors/mentors/mentors.component
     NavbarAppComponent,
     TaskModalComponent,
     MentorsComponent,
+    MentorDetailsModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +56,7 @@ import { MentorsComponent } from './components/mentors/mentors/mentors.component
     MatInputModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatTableModule,
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],
