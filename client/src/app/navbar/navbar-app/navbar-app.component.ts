@@ -32,6 +32,7 @@ export class NavbarAppComponent {
     modalRef.componentInstance.user = this.user;
     modalRef.result.then((result) => {
       if (result) {
+        // TODO: make API call instead of reloading
         location.reload();
       }
     });

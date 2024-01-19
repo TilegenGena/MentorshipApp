@@ -12,7 +12,7 @@ export class UserController {
   }
 
   @Get('users')
-  async findAllUsers() {
+  async AllUsers() {
     return this.userService.getAllUsers();
   }
 
@@ -22,7 +22,7 @@ export class UserController {
   }
 
   @Put(':id')
-  async updateTask(
+  async updateUser(
     @Param('id') id: number,
     @Body() userData: User,
   ): Promise<User> {
