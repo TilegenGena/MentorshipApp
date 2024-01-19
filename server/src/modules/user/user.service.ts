@@ -18,11 +18,11 @@ export class UserService {
   }
 
   async getUserById(id: number): Promise<User> {
-    const task = await this.userModel.findByPk(id);
-    if (!task) {
-      throw new NotFoundException(`Task with id ${id} not found`);
+    const user = await this.userModel.findByPk(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
     }
-    return task;
+    return user;
   }
 
   async updateUser(id: number, userData: User): Promise<User> {
