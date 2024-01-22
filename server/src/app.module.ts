@@ -4,11 +4,14 @@ import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import 'dotenv/config';
-import { ModulesModule } from './modules/modules.module';
+import { Modules } from './modules/module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { parse } from 'pg-connection-string';
 import { User } from './modules/user/user.model';
 import { Task } from './modules/task/task.model';
+import { Mentorship } from './modules/mentorship/mentorship.model';
+import { MentorshipRequest } from './modules/mentorship-request/mentorship-request.model';
+import { MentorshipResponse } from './modules/mentorship-response/mentorship-response.model';
 
 const url = process.env.DATABASE_URL!;
 const connectionOptions = parse(url);
@@ -25,7 +28,7 @@ const db = connectionOptions.database!;
       password: connectionOptions.password,
       database: db,
       autoLoadModels: true,
-      models: [User, Task],
+      models: [User, Task, Mentorship, MentorshipRequest, MentorshipResponse],
       synchronize: true,
       dialectOptions: {
         ssl: {
@@ -37,7 +40,7 @@ const db = connectionOptions.database!;
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../../', 'client/dist/client'),
     }),
-    ModulesModule,
+    Modules,
   ],
   controllers: [AppController],
   providers: [AppService],
