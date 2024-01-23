@@ -4,49 +4,35 @@ import {
   Table,
   DataType,
   ForeignKey,
-  PrimaryKey,
-  AutoIncrement,
   BelongsTo,
 } from 'sequelize-typescript';
 import { User } from '../user/user.model';
 
 @Table({
   tableName: 'mentorship',
+  timestamps: true,
 })
 export class Mentorship extends Model<Mentorship> {
-  private static ACTIVE = 'Active';
-  private static COMPLETED = 'Completed';
-
-  private static MENTORSHIP_STATUS = DataType.ENUM(
-    Mentorship.ACTIVE,
-    Mentorship.COMPLETED,
-  );
-
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
   @ForeignKey(() => User)
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, allowNull: false })
   mentorId: number;
 
   @BelongsTo(() => User, { foreignKey: { name: 'mentorId' } })
   mentor: User;
 
   @ForeignKey(() => User)
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, allowNull: false })
   menteeId: User;
 
   @BelongsTo(() => User, { foreignKey: { name: 'menteeId' } })
   mentee: User;
 
-  @Column({ type: Mentorship.MENTORSHIP_STATUS })
-  status: string;
-
-  @Column(DataType.DATE)
+  @Column({ type: DataType.DATE, allowNull: false })
   startDate: Date;
 
-  @Column(DataType.DATE)
+  @Column({ type: DataType.DATE, allowNull: false })
   endDate: Date;
 }

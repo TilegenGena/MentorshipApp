@@ -4,8 +4,6 @@ import {
   Table,
   DataType,
   ForeignKey,
-  PrimaryKey,
-  AutoIncrement,
   BelongsTo,
   HasOne,
 } from 'sequelize-typescript';
@@ -14,45 +12,33 @@ import { MentorshipResponse } from '../mentorship-response/mentorship-response.m
 
 @Table({
   tableName: 'mentorship_request',
+  timestamps: true,
 })
 export class MentorshipRequest extends Model<MentorshipRequest> {
-  private static PENDING = 'Pending';
-  private static RESOLVED = 'Resolved';
-
-  private static MENTORSHIP_REQUEST_STATUS = DataType.ENUM(
-    MentorshipRequest.PENDING,
-    MentorshipRequest.RESOLVED,
-  );
-
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
   @ForeignKey(() => User)
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, allowNull: false })
   menteeId: number;
 
   @BelongsTo(() => User, { foreignKey: { name: 'menteeId' } })
   mentee: User;
 
   @ForeignKey(() => User)
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, allowNull: false })
   mentorId: number;
 
   @BelongsTo(() => User, { foreignKey: { name: 'mentorId' } })
   mentor: User;
 
-  @Column(DataType.TEXT)
+  @Column({ type: DataType.TEXT, allowNull: false })
   requestMessage: string;
 
-  @Column({ type: MentorshipRequest.MENTORSHIP_REQUEST_STATUS })
-  requestStatus: string;
-
-  @Column(DataType.DATE)
+  @Column({ type: DataType.DATE, allowNull: false })
   startDate: Date;
 
-  @Column(DataType.DATE)
+  @Column({ type: DataType.DATE, allowNull: false })
   endDate: Date;
 
   @HasOne(() => MentorshipResponse)
