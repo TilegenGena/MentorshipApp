@@ -1,5 +1,7 @@
 import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
 import { Task } from '../task/task.model';
+import { Mentorship } from '../mentorship/mentorship.model';
+import { MentorshipRequest } from '../mentorship-request/mentorship-request.model';
 
 @Table({
   tableName: 'user',
@@ -51,4 +53,10 @@ export class User extends Model<User> {
 
   @HasMany(() => Task)
   tasks: Task[];
+
+  @HasMany(() => Mentorship)
+  mentorships: Mentorship[];
+
+  @HasMany(() => MentorshipRequest)
+  mentorshipRequests: MentorshipRequest[];
 }

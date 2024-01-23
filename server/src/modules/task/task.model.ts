@@ -4,6 +4,7 @@ import {
   Table,
   DataType,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { User } from '../user/user.model';
 
@@ -36,6 +37,9 @@ export class Task extends Model<Task> {
     allowNull: false,
   })
   title: string;
+
+  @BelongsTo(() => User, { foreignKey: { name: 'menteeId' } })
+  mentee: User;
 
   @ForeignKey(() => User)
   @Column({
