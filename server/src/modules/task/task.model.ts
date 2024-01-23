@@ -8,66 +8,42 @@ import {
 } from 'sequelize-typescript';
 import { User } from '../user/user.model';
 
+export enum TaskStatus {
+  TO_DO = 'To Do',
+  IN_PROGRESS = 'In Progress',
+  STUCK = 'Stuck',
+  DONE = 'Done',
+}
 @Table({
   tableName: 'task',
   timestamps: true,
 })
 export class Task extends Model<Task> {
-  private static TO_DO = 'To Do';
-  private static IN_PROGRESS = 'In Progress';
-  private static STUCK = 'Stuck';
-  private static DONE = 'Done';
-
-  private static TASK_STATUS = DataType.ENUM(
-    Task.TO_DO,
-    Task.IN_PROGRESS,
-    Task.STUCK,
-    Task.DONE,
-  );
-
-  @Column({
-    type: DataType.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  })
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
+  @Column({ type: DataType.STRING, allowNull: false })
   title: string;
 
   @BelongsTo(() => User, { foreignKey: { name: 'menteeId' } })
   mentee: User;
 
   @ForeignKey(() => User)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   menteeId: number;
 
-  @Column({
-    type: DataType.TEXT,
-    allowNull: false,
-  })
+  @Column({ type: DataType.TEXT, allowNull: true })
   description: string;
 
   @Column({
-    type: Task.TASK_STATUS,
+    type: DataType.ENUM(...Object.values(TaskStatus)),
     allowNull: false,
   })
-  status: string;
+  status: TaskStatus;
 
-  @Column({
-    type: DataType.DATE,
-    allowNull: false,
-  })
+  @Column({ type: DataType.DATE, allowNull: false })
   dueDate: Date;
 
-  @Column({
-    type: DataType.BOOLEAN,
-  })
+  @Column({ type: DataType.BOOLEAN, allowNull: true })
   archived: boolean;
 }

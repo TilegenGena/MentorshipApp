@@ -4,37 +4,37 @@ import {
   Table,
   DataType,
   ForeignKey,
-  PrimaryKey,
-  AutoIncrement,
   BelongsTo,
 } from 'sequelize-typescript';
 import { MentorshipRequest } from '../mentorship-request/mentorship-request.model';
 
-@Table({ tableName: 'mentorship_response' })
+export enum MentorshipResponseDecision {
+  ACCEPTED = 'Accepted',
+  DECLINED = 'Declined',
+  PENDING = 'Pending',
+}
+@Table({
+  tableName: 'mentorship_response',
+  timestamps: true,
+  indexes: [{ name: 'request_unique', unique: true, fields: ['requestId'] }],
+})
 export class MentorshipResponse extends Model<MentorshipResponse> {
-  private static ACCEPTED = 'Accepted';
-  private static DECLINED = 'Declined';
-
-  private static MENTORSHIP_RESPONSE_STATUS = DataType.ENUM(
-    MentorshipResponse.ACCEPTED,
-    MentorshipResponse.DECLINED,
-  );
-
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
   @ForeignKey(() => MentorshipRequest)
-  @Column(DataType.INTEGER)
+  @Column({ type: DataType.INTEGER, allowNull: false })
   requestId: number;
 
   @BelongsTo(() => MentorshipRequest, { foreignKey: { name: 'requestId' } })
   request: MentorshipRequest;
 
-  @Column(DataType.TEXT)
+  @Column({ type: DataType.TEXT, allowNull: true })
   responseMessage: string;
 
-  @Column({ type: MentorshipResponse.MENTORSHIP_RESPONSE_STATUS })
-  responseStatus: string;
+  @Column({
+    type: DataType.ENUM(...Object.values(MentorshipResponseDecision)),
+    allowNull: false,
+  })
+  responseStatus: MentorshipResponseDecision;
 }
