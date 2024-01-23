@@ -6,8 +6,11 @@ import {
   ForeignKey,
   PrimaryKey,
   AutoIncrement,
+  BelongsTo,
+  HasOne,
 } from 'sequelize-typescript';
 import { User } from '../user/user.model';
+import { MentorshipResponse } from '../mentorship-response/mentorship-response.model';
 
 @Table({
   tableName: 'mentorship_request',
@@ -30,9 +33,15 @@ export class MentorshipRequest extends Model<MentorshipRequest> {
   @Column(DataType.INTEGER)
   menteeId: number;
 
+  @BelongsTo(() => User, { foreignKey: { name: 'menteeId' } })
+  mentee: User;
+
   @ForeignKey(() => User)
   @Column(DataType.INTEGER)
   mentorId: number;
+
+  @BelongsTo(() => User, { foreignKey: { name: 'mentorId' } })
+  mentor: User;
 
   @Column(DataType.TEXT)
   requestMessage: string;
@@ -45,4 +54,7 @@ export class MentorshipRequest extends Model<MentorshipRequest> {
 
   @Column(DataType.DATE)
   endDate: Date;
+
+  @HasOne(() => MentorshipResponse)
+  mentorshipResponse: MentorshipResponse;
 }

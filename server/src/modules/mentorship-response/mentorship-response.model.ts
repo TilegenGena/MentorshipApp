@@ -6,6 +6,7 @@ import {
   ForeignKey,
   PrimaryKey,
   AutoIncrement,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { MentorshipRequest } from '../mentorship-request/mentorship-request.model';
 
@@ -27,6 +28,9 @@ export class MentorshipResponse extends Model<MentorshipResponse> {
   @ForeignKey(() => MentorshipRequest)
   @Column(DataType.INTEGER)
   requestId: number;
+
+  @BelongsTo(() => MentorshipRequest, { foreignKey: { name: 'requestId' } })
+  request: MentorshipRequest;
 
   @Column(DataType.TEXT)
   responseMessage: string;

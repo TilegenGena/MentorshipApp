@@ -6,6 +6,7 @@ import {
   ForeignKey,
   PrimaryKey,
   AutoIncrement,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { User } from '../user/user.model';
 
@@ -30,9 +31,15 @@ export class Mentorship extends Model<Mentorship> {
   @Column(DataType.INTEGER)
   mentorId: number;
 
+  @BelongsTo(() => User, { foreignKey: { name: 'mentorId' } })
+  mentor: User;
+
   @ForeignKey(() => User)
   @Column(DataType.INTEGER)
-  menteeId: number;
+  menteeId: User;
+
+  @BelongsTo(() => User, { foreignKey: { name: 'menteeId' } })
+  mentee: User;
 
   @Column({ type: Mentorship.MENTORSHIP_STATUS })
   status: string;
