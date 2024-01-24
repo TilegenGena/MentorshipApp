@@ -36,10 +36,10 @@ export class MentorshipRequest extends Model<MentorshipRequest> {
   requestMessage: string;
 
   @Column({ type: DataType.DATE, allowNull: false })
-  startDate: Date;
+  startDate: string;
 
   @Column({ type: DataType.DATE, allowNull: false })
-  endDate: Date;
+  endDate: string;
 
   @HasOne(() => MentorshipResponse)
   mentorshipResponse: MentorshipResponse;
