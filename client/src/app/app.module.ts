@@ -27,6 +27,7 @@ import { MentorsComponent } from './components/mentors/mentors/mentors.component
 import { MatTableModule } from '@angular/material/table';
 import { MentorDetailsModalComponent } from './mentor-details-modal/mentor-details-modal.component';
 import { UserModalComponent } from './components/user-modal/user-modal/user-modal.component';
+import { MentorshipRequestComponent } from './mentorship-request/mentorship-request-response';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { UserModalComponent } from './components/user-modal/user-modal/user-moda
     MentorsComponent,
     MentorDetailsModalComponent,
     UserModalComponent,
+    MentorshipRequestComponent,
   ],
   imports: [
     BrowserModule,

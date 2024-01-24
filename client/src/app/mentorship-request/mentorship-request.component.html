@@ -1,0 +1,101 @@
+<div class="modal-header">
+  <h4 class="modal-title">Request to a mentor</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.close()"
+  ></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="requestForm" (ngSubmit)="submitForm()">
+    <div class="form-group">
+      <label for="request-message">Request message: </label>
+      <input
+        type="text"
+        id="request-message"
+        class="form-control"
+        formControlName="requestMessage"
+        name="request-message"
+      />
+      <div
+        *ngIf="
+          requestForm.controls['requestMessage'].invalid &&
+          requestForm.controls['requestMessage'].touched
+        "
+        class="alert alert-danger"
+      >
+        Request message is required
+      </div>
+      <label for="startDate">Start Date</label>
+      <div style="display: flex; align-items: center">
+        <input
+          matInput
+          [matDatepicker]="startPicker"
+          id="startDate"
+          class="form-control"
+          formControlName="startDate"
+          style="flex: 1"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="startPicker"
+        ></mat-datepicker-toggle>
+      </div>
+      <mat-datepicker #startPicker></mat-datepicker>
+      <div
+        *ngIf="
+          requestForm.controls['startDate'].invalid &&
+          requestForm.controls['startDate'].touched
+        "
+        class="alert alert-danger"
+      >
+        Start date is required.
+      </div>
+
+      <label for="endDate">End Date</label>
+      <div style="display: flex; align-items: center">
+        <input
+          matInput
+          [matDatepicker]="endPicker"
+          id="endDate"
+          class="form-control"
+          formControlName="endDate"
+          style="flex: 1"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="endPicker"
+        ></mat-datepicker-toggle>
+      </div>
+      <mat-datepicker #endPicker></mat-datepicker>
+      <div
+        *ngIf="
+          requestForm.controls['endDate'].invalid &&
+          requestForm.controls['endDate'].touched
+        "
+        class="alert alert-danger"
+      >
+        End date is required.
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-secondary"
+    data-bs-dismiss="modal"
+    (click)="activeModal.close()"
+  >
+    Close
+  </button>
+  <button
+    type="submit"
+    class="btn btn-success"
+    [disabled]="!requestForm.valid"
+    (click)="submitForm()"
+  >
+    Save
+  </button>
+</div>
