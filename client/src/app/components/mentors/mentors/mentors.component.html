@@ -21,7 +21,14 @@
       >
         See Details
       </button>
-      <button mat-raised-button type="button" class="btn">Request</button>
+      <button
+        mat-raised-button
+        type="button"
+        class="btn"
+        (click)="requestMentorship(element)"
+      >
+        Request
+      </button>
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
