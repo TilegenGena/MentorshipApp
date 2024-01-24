@@ -11,7 +11,6 @@ import { MentorshipRequest } from '../mentorship-request/mentorship-request.mode
 export enum MentorshipResponseDecision {
   ACCEPTED = 'Accepted',
   DECLINED = 'Declined',
-  PENDING = 'Pending',
 }
 @Table({
   tableName: 'mentorship_response',
@@ -34,7 +33,7 @@ export class MentorshipResponse extends Model<MentorshipResponse> {
 
   @Column({
     type: DataType.ENUM(...Object.values(MentorshipResponseDecision)),
-    allowNull: false,
+    allowNull: true,
   })
   responseStatus: MentorshipResponseDecision;
 }
