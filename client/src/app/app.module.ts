@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { TaskListComponent } from './components/task-list/task-list/task-list.component';
@@ -29,6 +29,8 @@ import { MentorDetailsModalComponent } from './mentor-details-modal/mentor-detai
 import { UserModalComponent } from './components/user-modal/user-modal/user-modal.component';
 import { MentorshipRequestComponent } from './mentorship-request/mentorship-request-response';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { FakeLoginComponent } from './fake-login/fake-login.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { RegistrationComponent } from './components/registration/registration.co
     UserModalComponent,
     MentorshipRequestComponent,
     RegistrationComponent,
+    FakeLoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,8 @@ import { RegistrationComponent } from './components/registration/registration.co
     MatNativeDateModule,
     MatSelectModule,
     MatTableModule,
+    MatMenuModule,
+    FormsModule,
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],
