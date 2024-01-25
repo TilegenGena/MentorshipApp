@@ -8,9 +8,11 @@ export class MentorshipRequestController {
   constructor(private mentorshipRequestService: MentorshipRequestService) {}
 
   @Post('')
-  async createTask(
-    @Body() taskData: MentorshipRequest,
-  ): Promise<MentorshipRequestCreateDTO> {
-    return this.mentorshipRequestService.createMentorshipRequest(taskData);
+  async createMentorshipReques(
+    @Body() mentorshipRequestData: MentorshipRequest,
+  ): Promise<void> {
+    await this.mentorshipRequestService.createMentorshipRequest(
+      mentorshipRequestData,
+    );
   }
 }
