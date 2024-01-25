@@ -25,9 +25,14 @@
       id="navbarNavAltMarkup"
     >
       <div class="navbar-nav">
-        <a class="nav-link" href="/dashboard">Dashboard</a>
-        <a class="nav-link" href="/advice-wall">Advice Wall</a>
-        <a class="nav-link" href="/mentors">Mentors</a>
+        <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        <a class="nav-link" routerLink="/advice-wall">Advice-wall</a>
+        <a
+          *ngIf="user.userType == 'Mentee'"
+          class="nav-link"
+          routerLink="/mentors"
+          >Mentors</a
+        >
       </div>
       <div>
         <button
