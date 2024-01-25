@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" *ngIf="user$ | async as user">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <img
@@ -20,6 +20,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <div
+      *ngIf="user"
       class="collapse navbar-collapse justify-content-between"
       id="navbarNavAltMarkup"
     >
@@ -29,13 +30,28 @@
         <a class="nav-link" href="/mentors">Mentors</a>
       </div>
       <div>
+        <button
+          *ngIf="user.userType === 'Mentor'"
+          class="btn btn-warning"
+          [matMenuTriggerFor]="menu"
+        >
+          <b>{{ selectedMenteeName }}</b>
+        </button>
+        <mat-menu #menu="matMenu">
+          <div *ngFor="let mentee of mentees">
+            <button mat-menu-item (click)="onSelectMentee(mentee)">
+              {{ mentee.firstName + " " + mentee.lastName }}
+            </button>
+          </div>
+        </mat-menu>
+
         <button mat-icon-button class="btn btn-action">
           <mat-icon>notifications</mat-icon>
         </button>
         <button type="button" class="btn btn-action" (click)="editUser()">
-          {{ user?.firstName }} {{ user?.lastName }}
+          <b>{{ userProfile?.firstName }} {{ userProfile?.lastName }}</b>
         </button>
-        <button type="button" class="btn btn-action">
+        <button type="button" (click)="logout()" class="btn btn-action">
           <mat-icon mat-icon-button>logout</mat-icon>
         </button>
       </div>

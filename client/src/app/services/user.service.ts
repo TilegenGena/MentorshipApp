@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UserDTO } from '../interfaces/user';
 
 @Injectable({
@@ -16,5 +16,11 @@ export class UserService {
 
   editUser(param: UserDTO): Observable<UserDTO> {
     return this.httpService.put<UserDTO>(`mentorship/${param.id}`, param);
+  }
+
+  getMenteesForMentor(fakeLoggedIncurrentUser: number): Observable<UserDTO[]> {
+    return this.httpService.get<UserDTO[]>(
+      `mentorship/mentees-for-mentor/${fakeLoggedIncurrentUser}`
+    );
   }
 }

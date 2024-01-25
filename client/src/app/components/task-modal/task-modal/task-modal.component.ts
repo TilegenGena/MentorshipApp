@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FakeUserService } from 'src/app/fake-login/fake-login.service';
 import { TaskDTO } from 'src/app/interfaces/task';
 import { TaskService } from 'src/app/services/task.service';
 
@@ -15,16 +16,19 @@ export class TaskModalComponent {
   submitting!: Promise<void>;
   constructor(
     protected activeModal: NgbActiveModal,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private fakeUserService: FakeUserService
   ) {}
 
   ngOnInit() {
+    const activeMentee = this.fakeUserService.getCurrentUser();
     this.taskForm = new FormGroup({
       id: new FormControl(this.task ? this.task.id : null),
       title: new FormControl(
         this.task ? this.task.title : '',
         Validators.required
       ),
+      menteeId: new FormControl(activeMentee ? activeMentee.id : null),
       description: new FormControl(
         this.task ? this.task.description : '',
         Validators.required

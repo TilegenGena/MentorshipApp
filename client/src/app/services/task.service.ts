@@ -9,8 +9,8 @@ import { TaskDTO } from '../interfaces/task';
 export class TaskService {
   constructor(private httpService: HttpClient) {}
 
-  async getTasks(): Promise<Observable<TaskDTO[]>> {
-    return this.httpService.get<TaskDTO[]>('task/all-task');
+  getTasks(menteeId: number): Observable<TaskDTO[]> {
+    return this.httpService.get<TaskDTO[]>(`task/${menteeId}`);
   }
 
   async getTask(id: number): Promise<Observable<TaskDTO>> {
