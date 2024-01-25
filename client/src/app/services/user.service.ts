@@ -10,13 +10,11 @@ export class UserService {
   constructor(private httpService: HttpClient) {}
 
   getLoggedInUser(): Observable<UserDTO> {
-    // for now we will get all user, and show first
-    return this.httpService
-      .get<UserDTO[]>(`mentorship/users`)
-      .pipe(map((allUsers) => allUsers[0]));
+    // TODO: Later get actual logged in user
+    return this.httpService.get<UserDTO>(`mentorship/${1}`);
   }
 
-  async editUser(param: UserDTO): Promise<Observable<UserDTO>> {
+  editUser(param: UserDTO): Observable<UserDTO> {
     return this.httpService.put<UserDTO>(`mentorship/${param.id}`, param);
   }
 }
