@@ -1,3 +1,4 @@
+// Keep in sync with the client MentorshipRequestCreateDTO
 export interface MentorshipRequestCreateDTO {
   mentorId: number;
   requestMessage: string;
