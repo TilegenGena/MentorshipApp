@@ -38,9 +38,11 @@ export class TaskListComponent implements OnInit {
             title: 'Deleted!',
             text: 'Item has been deleted.',
             icon: 'success',
-          }).then((value) => {
+          }).then(async (value) => {
             if (value.isConfirmed) {
-              location.reload();
+              (await this.taskService.getTasks()).toPromise().then((tasks) => {
+                this.tasks = tasks;
+              });
             }
           });
         });
@@ -54,9 +56,11 @@ export class TaskListComponent implements OnInit {
       keyboard: false,
     });
     modalRef.componentInstance.task = task;
-    modalRef.result.then((result) => {
+    modalRef.result.then(async (result) => {
       if (result) {
-        location.reload();
+        (await this.taskService.getTasks()).toPromise().then((tasks) => {
+          this.tasks = tasks;
+        });
       }
     });
   }
@@ -66,9 +70,11 @@ export class TaskListComponent implements OnInit {
       backdrop: 'static',
       keyboard: false,
     });
-    modalRef.result.then((result) => {
+    modalRef.result.then(async (result) => {
       if (result) {
-        location.reload();
+        (await this.taskService.getTasks()).toPromise().then((tasks) => {
+          this.tasks = tasks;
+        });
       }
     });
   }

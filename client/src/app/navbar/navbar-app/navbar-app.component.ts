@@ -30,10 +30,10 @@ export class NavbarAppComponent {
       keyboard: false,
     });
     modalRef.componentInstance.user = this.user;
-    modalRef.result.then((result) => {
+    modalRef.result.then(async (result) => {
       if (result) {
-        // TODO: make API call instead of reloading
-        location.reload();
+        this.user = result;
+        // });
       }
     });
   }

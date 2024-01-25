@@ -80,7 +80,15 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary" [disabled]="!taskForm.valid">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-dismiss="modal"
+      (click)="activeModal.close()"
+    >
+      Close
+    </button>
+    <button type="submit" class="btn btn-success" [disabled]="!taskForm.valid">
       Save
     </button>
   </div>
