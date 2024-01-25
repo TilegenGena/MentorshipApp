@@ -15,9 +15,9 @@ import { TaskDTO as TaskInterface } from './task.interface';
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
-  @Get('all-task')
-  async findAll(): Promise<TaskInterface[]> {
-    return this.taskService.getAllTasks();
+  @Get(':menteeId')
+  async getTask(@Param('menteeId') menteeId: number): Promise<TaskInterface[]> {
+    return this.taskService.getAllTasks(menteeId);
   }
 
   @Get(':id')

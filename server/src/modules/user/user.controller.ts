@@ -11,6 +11,11 @@ export class UserController {
     return this.userService.getAllMentors();
   }
 
+  @Get('mentees-for-mentor/:mentorId')
+  async getMenteesForMentors(@Param('mentorId') mentorId: number) {
+    return this.userService.getMenteesForMentors(mentorId);
+  }
+
   @Get('users')
   async AllUsers() {
     return this.userService.getAllUsers();
