@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './user.model';
 import { InjectModel } from '@nestjs/sequelize';
+import { Mentorship } from '../mentorship/mentorship.model';
 
 @Injectable()
 export class UserService {
@@ -11,6 +12,23 @@ export class UserService {
 
   async getAllMentors(): Promise<User[]> {
     return User.findAll({ where: { userType: 'Mentor' } });
+  }
+
+  async getMenteesForMentors(mentorId: number): Promise<any[]> {
+    const mentorships = await Mentorship.findAll({
+      // TODO: Replace with the logged in mentorId
+      where: { mentorId },
+      include: [
+        {
+          model: User,
+          as: 'mentee',
+          attributes: ['id', 'firstName', 'lastName'],
+        },
+      ],
+    });
+    const mentees = mentorships.map((m) => m.mentee);
+
+    return mentees;
   }
 
   async getAllUsers(): Promise<User[]> {
