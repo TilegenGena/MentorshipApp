@@ -1,9 +1,4 @@
-<table
-  mat-table
-  class="mat-elevation-z8 demo-table"
-  recycleRows
-  [dataSource]="mentors"
->
+<table mat-table class="mat-elevation-z8" recycleRows [dataSource]="mentors">
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef>Full Name</th>
     <td mat-cell *matCellDef="let element">
@@ -13,18 +8,12 @@
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let element">
-      <button
-        mat-raised-button
-        type="button"
-        class="btn"
-        (click)="seeDetails(element)"
-      >
+      <button type="button" class="btn btn-info" (click)="seeDetails(element)">
         See Details
       </button>
       <button
-        mat-raised-button
         type="button"
-        class="btn"
+        class="btn btn-success"
         (click)="requestMentorship(element)"
       >
         Request

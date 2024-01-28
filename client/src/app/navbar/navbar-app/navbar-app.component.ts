@@ -32,8 +32,8 @@ export class NavbarAppComponent {
     private router: Router,
     private requestService: RequestResponseService
   ) {
-    // TODO: Decrease it to 1o seconds
-    interval(100000).subscribe((x) => {
+    // TODO: Decrease it to 10 seconds
+    interval(10000).subscribe((x) => {
       this.user$.subscribe((user) => {
         if (user) {
           if (user?.userType === 'Mentor') {
