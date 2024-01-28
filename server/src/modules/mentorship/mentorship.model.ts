@@ -25,14 +25,14 @@ export class Mentorship extends Model<Mentorship> {
 
   @ForeignKey(() => User)
   @Column({ type: DataType.INTEGER, allowNull: false })
-  menteeId: User;
+  menteeId: number;
 
   @BelongsTo(() => User, { foreignKey: { name: 'menteeId' } })
   mentee: User;
 
   @Column({ type: DataType.DATE, allowNull: false })
-  startDate: Date;
+  startDate: string;
 
   @Column({ type: DataType.DATE, allowNull: false })
-  endDate: Date;
+  endDate: string;
 }

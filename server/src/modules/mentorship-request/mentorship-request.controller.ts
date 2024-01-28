@@ -1,6 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { MentorshipRequestService } from './mentorship-request.service';
-import { MentorshipRequestCreateDTO } from './mentorship-request';
+import { MentorshipRequestGetDTO } from './mentorship-request';
 import { MentorshipRequest } from './mentorship-request.model';
 
 @Controller('mentorship-request')
@@ -14,5 +14,12 @@ export class MentorshipRequestController {
     await this.mentorshipRequestService.createMentorshipRequest(
       mentorshipRequestData,
     );
+  }
+
+  @Get('requests/:mentorId')
+  getNewMentorshipRequests(
+    @Param('mentorId') mentorId: number,
+  ): Promise<MentorshipRequestGetDTO[] | null> {
+    return this.mentorshipRequestService.getRequestsForMentor(mentorId);
   }
 }

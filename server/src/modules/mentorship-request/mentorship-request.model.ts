@@ -10,6 +10,10 @@ import {
 import { User } from '../user/user.model';
 import { MentorshipResponse } from '../mentorship-response/mentorship-response.model';
 
+export enum RequestStatus {
+  PENDING = 'Pending',
+  RESOLVED = 'Resolved',
+}
 @Table({
   tableName: 'mentorship_request',
   timestamps: true,
@@ -40,6 +44,9 @@ export class MentorshipRequest extends Model<MentorshipRequest> {
 
   @Column({ type: DataType.DATE, allowNull: false })
   endDate: string;
+
+  @Column({ type: DataType.ENUM(...Object.values(RequestStatus)) })
+  requestStatus: RequestStatus;
 
   @HasOne(() => MentorshipResponse)
   mentorshipResponse: MentorshipResponse;

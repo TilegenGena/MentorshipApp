@@ -31,6 +31,8 @@ import { MentorshipRequestComponent } from './mentorship-request/mentorship-requ
 import { RegistrationComponent } from './components/registration/registration.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { FakeLoginComponent } from './fake-login/fake-login.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MentorshipRequestModalComponent } from './components/mentorship-request-modal/mentorship-request-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { FakeLoginComponent } from './fake-login/fake-login.component';
     MentorshipRequestComponent,
     RegistrationComponent,
     FakeLoginComponent,
+    MentorshipRequestModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ import { FakeLoginComponent } from './fake-login/fake-login.component';
     MatTableModule,
     MatMenuModule,
     FormsModule,
+    MatBadgeModule,
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],
