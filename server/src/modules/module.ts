@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { MentorshipRequestModule } from './mentorship-request/mentorship-request.module';
 import { MentorshipResponseModule } from './mentorship-response/mentorship-response.module';
 import { MentorshipModule } from './mentorship/mentorship.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { MentorshipModule } from './mentorship/mentorship.module';
     MentorshipRequestModule,
     MentorshipModule,
     MentorshipResponseModule,
+    AuthModule,
   ],
 })
 export class Modules {}
