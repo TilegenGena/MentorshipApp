@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h4 class="modal-title">Mentorship requests</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body" *ngIf="length; else elseBlock">
+  <mat-table [dataSource]="requests">
+    <ng-container matColumnDef="fullName">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row"
+        >{{ row.mentee.firstName + " " + row.mentee.lastName }} wants you to be
+        a mentor!</mat-cell
+      >
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button type="button" class="btn btn-info" (click)="open(row)">
+          Details
+        </button>
+        <button type="button" class="btn btn-success" (click)="accept(row)">
+          Accept
+        </button>
+        <button type="button" class="btn btn-danger">Decline</button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"> </mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
+<ng-template
+  #elseBlock
+  style="
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  "
+>
+  There are no any requests!
+</ng-template>
+
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close('Close click')"
+  >
+    Close
+  </button>
+</div>
