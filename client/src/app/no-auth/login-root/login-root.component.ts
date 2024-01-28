@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-login-root',
@@ -9,7 +11,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginRootComponent {
   loginForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -22,6 +28,9 @@ export class LoginRootComponent {
     if (this.loginForm.valid) {
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
+      this.authService.logIn(email, password).subscribe((user) => {
+        this.router.navigate(['/dashboard']);
+      });
     }
   }
 }

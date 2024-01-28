@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, interval } from 'rxjs';
+import { AuthService } from 'src/app/auth.service';
 import { MentorshipRequestModalComponent } from 'src/app/components/mentorship-request-modal/mentorship-request-modal.component';
 import { UserModalComponent } from 'src/app/components/user-modal/user-modal/user-modal.component';
 import { FakeUserService } from 'src/app/fake-login/fake-login.service';
@@ -30,7 +31,8 @@ export class NavbarAppComponent {
     private menteeService: SharedService,
     private fakeUserService: FakeUserService,
     private router: Router,
-    private requestService: RequestResponseService
+    private requestService: RequestResponseService,
+    private authService: AuthService
   ) {
     // TODO: Decrease it to 10 seconds
     interval(10000).subscribe((x) => {
@@ -81,8 +83,9 @@ export class NavbarAppComponent {
   }
 
   logout() {
-    this.fakeUserService.logout();
-    this.router.navigate(['/login']);
+    this.authService.logOut().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
   }
 
   openNotification() {
