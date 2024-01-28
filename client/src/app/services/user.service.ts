@@ -1,13 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserDTO } from '../interfaces/user';
+import { CreateUserDTO, UserDTO } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   constructor(private httpService: HttpClient) {}
+
+  createUser(user: CreateUserDTO): Observable<CreateUserDTO> {
+    return this.httpService.post<CreateUserDTO>(`mentorship/user-create`, user);
+  }
 
   getLoggedInUser(): Observable<UserDTO> {
     // TODO: Later get actual logged in user

@@ -74,7 +74,6 @@
                   id="input-email"
                   formControlName="email"
                   placeholder="name@example.com"
-                  value="test@example.com"
                 />
               </div>
               <div
@@ -95,8 +94,8 @@
               <div class="col-sm-10">
                 <input
                   type="password"
-                  formControlName="password1"
-                  for="password1"
+                  formControlName="password"
+                  for="password"
                   class="form-control"
                   id="input-password"
                 />
@@ -132,7 +131,7 @@
                     name="role"
                     id="mentor-button"
                     formControlName="userType"
-                    value="mentor"
+                    value="Mentor"
                   />
                   <label class="form-check-label" for="mentor-button">
                     Mentor
@@ -145,7 +144,7 @@
                     name="role"
                     id="mentee-button"
                     formControlName="userType"
-                    value="mentee"
+                    value="Mentee"
                   />
                   <label class="form-check-label" for="mentee-button">
                     Mentee
@@ -153,7 +152,13 @@
                 </div>
               </div>
             </fieldset>
-            <button type="submit" class="btn btn-primary">Sign up</button>
+            <button
+              [disabled]="!registrationForm.valid"
+              type="submit"
+              class="btn btn-success"
+            >
+              Sign up
+            </button>
           </div>
         </form>
       </div>
