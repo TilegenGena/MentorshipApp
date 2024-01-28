@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './user.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { Mentorship } from '../mentorship/mentorship.model';
+import { PasswordHash } from 'src/auth/password-hash';
+import { Model } from 'sequelize-typescript';
 
 @Injectable()
 export class UserService {
@@ -49,5 +51,17 @@ export class UserService {
     });
 
     return this.getUserById(id);
+  }
+
+  async getPasswordHashById(id: number): Promise<PasswordHash | null> {
+    const userWithOnlyPasswordHash = (await this.userModel.findByPk(id, {
+      attributes: ['passwordHash'],
+    })) as (Model & { passwordHash: PasswordHash }) | null;
+
+    if (!userWithOnlyPasswordHash) {
+      return null;
+    }
+
+    return userWithOnlyPasswordHash.passwordHash;
   }
 }

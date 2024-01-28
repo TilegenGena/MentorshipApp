@@ -2,6 +2,7 @@ import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
 import { Task } from '../task/task.model';
 import { Mentorship } from '../mentorship/mentorship.model';
 import { MentorshipRequest } from '../mentorship-request/mentorship-request.model';
+import { PasswordHash } from 'src/auth/password-hash';
 
 export enum UserType {
   MENTOR = 'Mentor',
@@ -30,6 +31,19 @@ export class User extends Model<User> {
 
   @Column({ type: DataType.ENUM(...Object.values(UserType)), allowNull: false })
   userType: UserType;
+
+  @Column({
+    type: DataType.STRING(200),
+    allowNull: false,
+    field: 'passwordHash',
+    get: function () {
+      return PasswordHash.fromHashString(this.getDataValue('passwordHash'));
+    },
+    set: function (value: PasswordHash) {
+      this.setDataValue('passwordHash', value.getHash());
+    },
+  })
+  passwordHash: PasswordHash;
 
   @HasMany(() => Task)
   tasks: Task[];
