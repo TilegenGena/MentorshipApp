@@ -33,6 +33,12 @@ export class UserService {
     return mentees;
   }
 
+  async createUser(user: any): Promise<User> {
+    const pass = await PasswordHash.fromPassword(user.password);
+    user.passwordHash = pass;
+    return this.userModel.create(user);
+  }
+
   async getAllUsers(): Promise<User[]> {
     return User.findAll();
   }
