@@ -4,10 +4,10 @@ import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice-wall.component';
 import { MentorsComponent } from './components/mentors/mentors/mentors.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { FakeLoginComponent } from './fake-login/fake-login.component';
+import { LoginRootComponent } from './no-auth/login-root/login-root.component';
 
 const routes: Routes = [
-  { path: 'login', component: FakeLoginComponent },
+  { path: 'login', component: LoginRootComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'advice-wall', component: AdviceWallComponent },
   { path: 'mentors', component: MentorsComponent },
