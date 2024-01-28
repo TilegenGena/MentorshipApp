@@ -33,6 +33,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FakeLoginComponent } from './fake-login/fake-login.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MentorshipRequestModalComponent } from './components/mentorship-request-modal/mentorship-request-modal.component';
+import { NoAuthModule } from './no-auth/no-auth.module';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { MentorshipRequestModalComponent } from './components/mentorship-request
     MatMenuModule,
     FormsModule,
     MatBadgeModule,
+    NoAuthModule,
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],
