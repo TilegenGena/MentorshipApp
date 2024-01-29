@@ -35,7 +35,7 @@ export class NavbarAppComponent {
     private authService: AuthService
   ) {
     // TODO: Decrease it to 10 seconds
-    interval(10000).subscribe((x) => {
+    interval(1000000).subscribe((x) => {
       this.user$.subscribe((user) => {
         if (user) {
           if (user?.userType === 'Mentor') {
