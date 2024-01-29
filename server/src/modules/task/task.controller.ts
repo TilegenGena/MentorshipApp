@@ -6,7 +6,6 @@ import {
   Delete,
   Param,
   Put,
-  UseGuards,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { Task } from './task.model';
@@ -17,7 +16,6 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
-  @UseGuards(AuthGuard)
   @Get(':menteeId')
   async getTask(@Param('menteeId') menteeId: number): Promise<TaskInterface[]> {
     return this.taskService.getAllTasks(menteeId);

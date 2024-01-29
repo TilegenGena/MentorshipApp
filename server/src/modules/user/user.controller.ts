@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.model';
+import { PublicRoute } from 'src/auth/public-route';
 
 export interface CreateUserDTO {
   firstName: string;
@@ -14,6 +15,7 @@ export interface CreateUserDTO {
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @PublicRoute()
   @Post('user-create')
   async createUser(@Body() user: User) {
     return this.userService.createUser(user);

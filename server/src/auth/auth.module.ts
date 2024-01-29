@@ -8,6 +8,9 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { SessionSerializer } from './session.serializer';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+
+import { AuthGuard } from './auth.guard';
 
 @Module({
   imports: [
@@ -18,6 +21,15 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, LocalStrategy, SessionSerializer],
+  providers: [
+    AuthService,
+    UserService,
+    LocalStrategy,
+    SessionSerializer,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AuthModule {}
