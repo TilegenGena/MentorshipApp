@@ -22,6 +22,8 @@ export class AuthController {
     return req.user!;
   }
 
-  // @Post('/log_out')
-  // async logOut(): void
+  @Post('/log_out')
+  logOut(@Request() req: RequestType): void {
+    req.logOut(() => null);
+  }
 }
