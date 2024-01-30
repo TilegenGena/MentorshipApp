@@ -1,4 +1,4 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { User } from 'src/modules/user/user.model';
 import { AuthService } from './auth.service';
 import { Request as RequestType } from 'express';
@@ -19,5 +19,11 @@ export class AuthController {
   @Post('/log_out')
   logOut(@Request() req: RequestType): void {
     req.logOut(() => null);
+  }
+
+  @PublicRoute()
+  @Get('get_logged_in_user')
+  getLoggedInUser(@Request() req: RequestType): User | null {
+    return req.user!;
   }
 }
