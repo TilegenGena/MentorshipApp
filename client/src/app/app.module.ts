@@ -34,6 +34,8 @@ import { FakeLoginComponent } from './fake-login/fake-login.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MentorshipRequestModalComponent } from './components/mentorship-request-modal/mentorship-request-modal.component';
 import { NoAuthModule } from './no-auth/no-auth.module';
+import { RouterModule } from '@angular/router';
+import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice-wall.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { NoAuthModule } from './no-auth/no-auth.module';
     RegistrationComponent,
     FakeLoginComponent,
     MentorshipRequestModalComponent,
+    AdviceWallComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ import { NoAuthModule } from './no-auth/no-auth.module';
     FormsModule,
     MatBadgeModule,
     NoAuthModule,
+    RouterModule,
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],
