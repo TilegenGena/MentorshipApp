@@ -96,9 +96,7 @@ export class TaskListComponent implements OnInit {
   }
 
   async getTasksForMentee() {
-    const tasks = await this.taskService
-      .getTasks(this.activeMenteeId)
-      .toPromise();
+    const tasks = await this.taskService.getTasks().toPromise();
     this.tasks = tasks;
   }
 

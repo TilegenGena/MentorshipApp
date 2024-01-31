@@ -10,21 +10,14 @@ export class UserService {
   constructor(private httpService: HttpClient) {}
 
   createUser(user: CreateUserDTO): Observable<CreateUserDTO> {
-    return this.httpService.post<CreateUserDTO>(`mentorship/user-create`, user);
-  }
-
-  getLoggedInUser(): Observable<UserDTO> {
-    // TODO: Later get actual logged in user
-    return this.httpService.get<UserDTO>(`mentorship/${1}`);
+    return this.httpService.post<CreateUserDTO>(`users/user-create`, user);
   }
 
   editUser(param: UserDTO): Observable<UserDTO> {
-    return this.httpService.put<UserDTO>(`mentorship/${param.id}`, param);
+    return this.httpService.put<UserDTO>('users', param);
   }
 
-  getMenteesForMentor(fakeLoggedIncurrentUser: number): Observable<UserDTO[]> {
-    return this.httpService.get<UserDTO[]>(
-      `mentorship/mentees-for-mentor/${fakeLoggedIncurrentUser}`
-    );
+  getMenteesForMentor(): Observable<UserDTO[]> {
+    return this.httpService.get<UserDTO[]>('users/mentees-for-mentor');
   }
 }

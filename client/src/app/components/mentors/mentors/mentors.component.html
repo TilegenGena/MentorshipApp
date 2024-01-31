@@ -12,6 +12,7 @@
         See Details
       </button>
       <button
+        [disabled]="disableButton$ | async"
         type="button"
         class="btn btn-success"
         (click)="requestMentorship(element)"

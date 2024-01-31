@@ -8,6 +8,8 @@ import {
   MentorshipRequest,
   RequestStatus,
 } from '../mentorship-request/mentorship-request.model';
+import { Op } from 'sequelize';
+import { User } from '../user/user.model';
 
 @Injectable()
 export class MentorshipService {
@@ -33,6 +35,50 @@ export class MentorshipService {
       } as Mentorship);
     } else {
       throw new NotFoundException(`Request is not found`);
+    }
+  }
+
+  async getCurrentMentorship(menteeId: number): Promise<any> {
+    try {
+      const currentDate = new Date();
+      const currentMentorship = await Mentorship.findOne({
+        where: {
+          menteeId,
+          startDate: { [Op.lte]: currentDate },
+          endDate: { [Op.gte]: currentDate },
+        },
+        include: [
+          {
+            model: User,
+            as: 'mentor',
+            attributes: [
+              'id',
+              'firstName',
+              'lastName',
+              'email',
+              'userType',
+              'bio',
+            ],
+          },
+          {
+            model: User,
+            as: 'mentee',
+            attributes: [
+              'id',
+              'firstName',
+              'lastName',
+              'email',
+              'userType',
+              'bio',
+            ],
+          },
+        ],
+      });
+
+      return currentMentorship;
+    } catch (error) {
+      console.error('Error fetching current mentorship:', error);
+      throw error;
     }
   }
 }

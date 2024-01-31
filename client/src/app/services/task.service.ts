@@ -9,23 +9,27 @@ import { TaskDTO } from '../interfaces/task';
 export class TaskService {
   constructor(private httpService: HttpClient) {}
 
-  getTasks(menteeId: number): Observable<TaskDTO[]> {
+  getTasks(): Observable<TaskDTO[]> {
+    return this.httpService.get<TaskDTO[]>(`task`);
+  }
+
+  getTasksForMentee(menteeId: number): Observable<TaskDTO[]> {
     return this.httpService.get<TaskDTO[]>(`task/${menteeId}`);
   }
 
-  async getTask(id: number): Promise<Observable<TaskDTO>> {
+  getTask(id: number): Observable<TaskDTO> {
     return this.httpService.get<TaskDTO>(`task/${id}`);
   }
 
-  async createTask(param: TaskDTO): Promise<Observable<TaskDTO>> {
-    return this.httpService.post<TaskDTO>('task/task', param);
+  createTask(param: TaskDTO): Observable<TaskDTO> {
+    return this.httpService.post<TaskDTO>('task', param);
   }
 
-  async editTask(param: TaskDTO): Promise<Observable<TaskDTO>> {
+  editTask(param: TaskDTO): Observable<TaskDTO> {
     return this.httpService.put<TaskDTO>(`task/${param.id}`, param);
   }
 
-  async deleteTask(id: number): Promise<Observable<TaskDTO>> {
+  deleteTask(id: number): Observable<TaskDTO> {
     return this.httpService.delete<TaskDTO>(`task/${id}`);
   }
 }
