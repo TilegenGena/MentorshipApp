@@ -6,18 +6,32 @@ import {
   Delete,
   Param,
   Put,
+  Request,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { Task } from './task.model';
 import { TaskDTO as TaskInterface } from './task.interface';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { Request as RequestType } from 'express';
 
 @Controller('task')
 export class TaskController {
   constructor(private taskService: TaskService) {}
 
+  @Get('')
+  async getTask(@Request() req: RequestType): Promise<TaskInterface[]> {
+    if (req.user) {
+      const userId = req.user?.id;
+      return this.taskService.getAllTasks(userId);
+    } else {
+      throw new UnauthorizedException();
+    }
+  }
+
   @Get(':menteeId')
-  async getTask(@Param('menteeId') menteeId: number): Promise<TaskInterface[]> {
+  async getTaskForMentee(
+    @Param('menteeId') menteeId: number,
+  ): Promise<TaskInterface[]> {
     return this.taskService.getAllTasks(menteeId);
   }
 
@@ -26,9 +40,17 @@ export class TaskController {
     return this.taskService.getTaskById(id);
   }
 
-  @Post('task')
-  async createTask(@Body() taskData: Task): Promise<Task> {
-    return this.taskService.createTask(taskData);
+  @Post('')
+  async createTask(
+    @Request() req: RequestType,
+    @Body() taskData: Task,
+  ): Promise<Task> {
+    const userId = req.user?.id;
+    if (userId) {
+      return this.taskService.createTask(taskData, userId);
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 
   @Put(':id')

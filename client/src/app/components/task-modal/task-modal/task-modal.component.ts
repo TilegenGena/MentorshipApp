@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FakeUserService } from 'src/app/fake-login/fake-login.service';
 import { TaskDTO } from 'src/app/interfaces/task';
 import { TaskService } from 'src/app/services/task.service';
 
@@ -16,19 +15,16 @@ export class TaskModalComponent {
   submitting!: Promise<void>;
   constructor(
     protected activeModal: NgbActiveModal,
-    private taskService: TaskService,
-    private fakeUserService: FakeUserService
+    private taskService: TaskService
   ) {}
 
   ngOnInit() {
-    const activeMentee = this.fakeUserService.getCurrentUser();
     this.taskForm = new FormGroup({
       id: new FormControl(this.task ? this.task.id : null),
       title: new FormControl(
         this.task ? this.task.title : '',
         Validators.required
       ),
-      menteeId: new FormControl(activeMentee ? activeMentee.id : null),
       description: new FormControl(
         this.task ? this.task.description : '',
         Validators.required
@@ -47,17 +43,13 @@ export class TaskModalComponent {
   async submitForm() {
     if (this.taskForm.valid) {
       if (!this.taskForm.value.id) {
-        (await this.taskService.createTask(this.taskForm.value))
-          .toPromise()
-          .then(() => {
-            this.activeModal.close(this.taskForm.value);
-          });
+        this.taskService.createTask(this.taskForm.value).subscribe(() => {
+          this.activeModal.close(this.taskForm.value);
+        });
       } else {
-        (await this.taskService.editTask(this.taskForm.value))
-          .toPromise()
-          .then(() => {
-            this.activeModal.close(this.taskForm.value);
-          });
+        this.taskService.editTask(this.taskForm.value).subscribe(() => {
+          this.activeModal.close(this.taskForm.value);
+        });
       }
     }
   }

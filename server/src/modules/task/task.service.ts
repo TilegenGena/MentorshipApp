@@ -10,8 +10,8 @@ export class TaskService {
     private readonly taskModel: typeof Task,
   ) {}
 
-  async createTask(taskData: Task): Promise<Task> {
-    // TODO: Add menteeId when mentee is logged in the server
+  async createTask(taskData: Task, userId: number): Promise<Task> {
+    taskData.menteeId = userId;
     taskData.createdAt = new Date();
     taskData.updatedAt = new Date();
     // TODO: Resolve archived
@@ -20,7 +20,7 @@ export class TaskService {
   }
 
   async getAllTasks(menteeId: number): Promise<TaskDTO[]> {
-    return this.taskModel.findAll({ where: { menteeId } });
+    return this.taskModel.findAll({ where: { menteeId, archived: false } });
   }
 
   async getTaskById(id: number): Promise<Task> {

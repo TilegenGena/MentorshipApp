@@ -1,7 +1,17 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Request,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { PublicRoute } from 'src/auth/public-route';
+import { Request as RequestType } from 'express';
 
 export interface CreateUserDTO {
   firstName: string;
@@ -11,7 +21,7 @@ export interface CreateUserDTO {
   bio: string;
   userType: string;
 }
-@Controller('mentorship')
+@Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -26,12 +36,16 @@ export class UserController {
     return this.userService.getAllMentors();
   }
 
-  @Get('mentees-for-mentor/:mentorId')
-  async getMenteesForMentors(@Param('mentorId') mentorId: number) {
-    return this.userService.getMenteesForMentors(mentorId);
+  @Get('mentees-for-mentor')
+  async getMenteesForMentors(@Request() req: RequestType) {
+    if (req.user) {
+      return this.userService.getMenteesForMentors(req.user.id);
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 
-  @Get('users')
+  @Get('')
   async AllUsers() {
     return this.userService.getAllUsers();
   }
@@ -41,11 +55,15 @@ export class UserController {
     return this.userService.getUserById(id);
   }
 
-  @Put(':id')
+  @Put('')
   async updateUser(
-    @Param('id') id: number,
+    @Request() req: RequestType,
     @Body() userData: User,
   ): Promise<User> {
-    return this.userService.updateUser(id, userData);
+    if (req.user) {
+      return this.userService.updateUser(req.user.id, userData);
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 }

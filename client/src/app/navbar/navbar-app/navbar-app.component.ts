@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/auth.service';
 import { MentorshipRequestModalComponent } from 'src/app/components/mentorship-request-modal/mentorship-request-modal.component';
 import { UserModalComponent } from 'src/app/components/user-modal/user-modal/user-modal.component';
 import { FakeUserService } from 'src/app/fake-login/fake-login.service';
+import { Mentorship } from 'src/app/interfaces/mentorship-request';
 import { UserDTO } from 'src/app/interfaces/user';
 import { RequestResponseService } from 'src/app/request-response.service';
 import { UserService } from 'src/app/services/user.service';
@@ -21,9 +22,11 @@ export class NavbarAppComponent {
   userProfile: UserDTO | undefined | null;
   mentees!: UserDTO[] | undefined;
   selectedMenteeName: string = 'Mentorship';
-  user$: Observable<UserDTO | null | undefined> = this.fakeUserService.user$;
+  user$: Observable<UserDTO | null | undefined> =
+    this.authService.getLoggedInUser();
   requests!: any[];
   length!: number;
+  currentMentorship: Mentorship | undefined;
 
   constructor(
     private userService: UserService,
@@ -32,7 +35,8 @@ export class NavbarAppComponent {
     private fakeUserService: FakeUserService,
     private router: Router,
     private requestService: RequestResponseService,
-    private authService: AuthService
+    private authService: AuthService,
+    private requestResponseService: RequestResponseService
   ) {
     // TODO: Decrease it to 10 seconds
     interval(1000000).subscribe((x) => {
@@ -56,7 +60,7 @@ export class NavbarAppComponent {
       this.userProfile = user;
       if (user && this.fakeUserService.isMentor()) {
         const mentees = await this.userService
-          .getMenteesForMentor(user.id)
+          .getMenteesForMentor()
           .toPromise();
 
         this.mentees = mentees;
@@ -94,5 +98,16 @@ export class NavbarAppComponent {
     });
     modalRef.componentInstance.requests = this.requests;
     modalRef.componentInstance.length = this.length;
+  }
+
+  getCurrentMentorship() {
+    this.requestResponseService
+      .getCurrentMentorship()
+      .toPromise()
+      .then((currentMentorship) => {
+        if (currentMentorship) {
+          this.currentMentorship = currentMentorship;
+        }
+      });
   }
 }

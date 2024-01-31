@@ -1,24 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {
+  Mentorship,
   MentorshipRequestCreateDTO,
   MentorshipRequestGetDTO,
 } from './interfaces/mentorship-request';
-import { UserDTO } from './interfaces/user';
-import { FakeUserService } from './fake-login/fake-login.service';
 import { MentorshipResponseDTOGet } from './interfaces/metorship-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RequestResponseService {
-  user$: Observable<UserDTO | null | undefined> = this.fakeUserService.user$;
-
-  constructor(
-    private httpService: HttpClient,
-    private fakeUserService: FakeUserService
-  ) {}
+  constructor(private httpService: HttpClient) {}
 
   getRequest(mentorId: number): Observable<MentorshipRequestGetDTO[]> {
     return this.httpService.get<MentorshipRequestGetDTO[]>(
@@ -34,8 +28,16 @@ export class RequestResponseService {
 
   acceptRequest(requestId: number): Observable<MentorshipRequestCreateDTO> {
     return this.httpService.post<MentorshipRequestCreateDTO>(
-      `mentorship-accept/one`,
+      `mentorship/accept`,
       { requestId }
     );
+  }
+
+  getCurrentMentorship(): Observable<Mentorship> {
+    return this.httpService.get<Mentorship>('mentorship');
+  }
+
+  hasCurrentMentorship(): Observable<boolean> {
+    return this.getCurrentMentorship().pipe(map((mentorship) => !!mentorship));
   }
 }
