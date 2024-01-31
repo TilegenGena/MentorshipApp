@@ -4,10 +4,10 @@ import { TaskDTO } from 'src/app/interfaces/task';
 import { TaskService } from 'src/app/services/task.service';
 import { TaskModalComponent } from '../../task-modal/task-modal/task-modal.component';
 import Swal from 'sweetalert2';
-import { SharedService } from 'src/app/shared.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FakeUserService } from 'src/app/fake-login/fake-login.service';
 import { UserDTO } from 'src/app/interfaces/user';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-task-list',
@@ -17,31 +17,20 @@ import { UserDTO } from 'src/app/interfaces/user';
 })
 export class TaskListComponent implements OnInit {
   tasks: TaskDTO[] | undefined = [];
-  private subscription!: Subscription;
   activeMenteeId!: number;
-  user$: Observable<UserDTO | null | undefined> = this.fakeUserService.user$;
+  user$: Observable<UserDTO | null | undefined> =
+    this.authService.getLoggedInUser();
+  tasks$!: Observable<TaskDTO[]>;
 
   constructor(
     private taskService: TaskService,
     private ngbModal: NgbModal,
-    private sharedService: SharedService,
-    protected fakeUserService: FakeUserService
+    protected fakeUserService: FakeUserService,
+    private authService: AuthService
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.user$.subscribe(async (user) => {
-      if (user && !this.fakeUserService.isMentor()) {
-        this.activeMenteeId = user.id;
-        this.getTasksForMentee();
-      }
-    });
-
-    this.subscription = this.sharedService.menteeChanged$.subscribe(
-      async (menteeId: number) => {
-        this.activeMenteeId = menteeId;
-        this.getTasksForMentee();
-      }
-    );
+    this.tasks$ = this.taskService.getTasksAsObservable();
   }
 
   deleteTask(id: number) {
@@ -55,16 +44,11 @@ export class TaskListComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        (await this.taskService.deleteTask(id)).toPromise().then(() => {
-          Swal.fire({
-            title: 'Deleted!',
-            text: 'Item has been deleted.',
-            icon: 'success',
-          }).then(async (value) => {
-            if (value.isConfirmed) {
-              this.getTasksForMentee();
-            }
-          });
+        this.taskService.deleteTask(id).subscribe();
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Item has been deleted.',
+          icon: 'success',
         });
       }
     });
@@ -76,9 +60,9 @@ export class TaskListComponent implements OnInit {
       keyboard: false,
     });
     modalRef.componentInstance.task = task;
-    modalRef.result.then(async (result) => {
-      if (result) {
-        this.getTasksForMentee();
+    modalRef.result.then((value) => {
+      if (value) {
+        this.taskService.editTask(value).subscribe();
       }
     });
   }
@@ -90,17 +74,8 @@ export class TaskListComponent implements OnInit {
     });
     modalRef.result.then(async (result) => {
       if (result) {
-        this.getTasksForMentee();
+        this.taskService.createTask(result).subscribe();
       }
     });
-  }
-
-  async getTasksForMentee() {
-    const tasks = await this.taskService.getTasks().toPromise();
-    this.tasks = tasks;
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
   }
 }

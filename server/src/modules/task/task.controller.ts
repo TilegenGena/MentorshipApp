@@ -44,10 +44,11 @@ export class TaskController {
   async createTask(
     @Request() req: RequestType,
     @Body() taskData: Task,
-  ): Promise<Task> {
+  ): Promise<TaskInterface[]> {
     const userId = req.user?.id;
     if (userId) {
-      return this.taskService.createTask(taskData, userId);
+      await this.taskService.createTask(taskData, userId);
+      return this.taskService.getAllTasks(userId);
     } else {
       throw new UnauthorizedException();
     }
@@ -55,14 +56,28 @@ export class TaskController {
 
   @Put(':id')
   async updateTask(
+    @Request() req: RequestType,
     @Param('id') id: number,
     @Body() taskData: Task,
-  ): Promise<Task> {
-    return this.taskService.updateTask(id, taskData);
+  ): Promise<TaskInterface[]> {
+    if (req.user) {
+      await this.taskService.updateTask(id, taskData);
+      return this.taskService.getAllTasks(req.user.id);
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 
   @Delete(':id')
-  async deleteTask(@Param('id') id: number): Promise<void> {
-    return this.taskService.deleteTask(id);
+  async deleteTask(
+    @Request() req: RequestType,
+    @Param('id') id: number,
+  ): Promise<TaskInterface[]> {
+    if (req.user) {
+      await this.taskService.deleteTask(id);
+      return this.taskService.getAllTasks(req.user.id);
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 }

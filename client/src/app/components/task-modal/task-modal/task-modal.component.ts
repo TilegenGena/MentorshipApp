@@ -13,10 +13,7 @@ export class TaskModalComponent {
   @Input() task!: TaskDTO;
   taskForm!: FormGroup;
   submitting!: Promise<void>;
-  constructor(
-    protected activeModal: NgbActiveModal,
-    private taskService: TaskService
-  ) {}
+  constructor(protected activeModal: NgbActiveModal) {}
 
   ngOnInit() {
     this.taskForm = new FormGroup({
@@ -42,15 +39,7 @@ export class TaskModalComponent {
 
   async submitForm() {
     if (this.taskForm.valid) {
-      if (!this.taskForm.value.id) {
-        this.taskService.createTask(this.taskForm.value).subscribe(() => {
-          this.activeModal.close(this.taskForm.value);
-        });
-      } else {
-        this.taskService.editTask(this.taskForm.value).subscribe(() => {
-          this.activeModal.close(this.taskForm.value);
-        });
-      }
+      this.activeModal.close(this.taskForm.value);
     }
   }
 }

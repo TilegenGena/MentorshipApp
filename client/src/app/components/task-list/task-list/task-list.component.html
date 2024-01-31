@@ -1,11 +1,11 @@
 <div *ngIf="user$ | async as user">
-  <div *ngIf="!fakeUserService.isMentor()" class="add-task-button">
+  <div *ngIf="user.userType === 'Mentee'" class="add-task-button">
     <button class="btn btn-success" (click)="createTask()">
       <b>Add Task</b>
     </button>
   </div>
 
-  <div class="container" *ngIf="tasks" style="padding: 10px">
+  <div class="container" *ngIf="tasks$ | async as tasks" style="padding: 10px">
     <div class="row">
       <div *ngFor="let task of tasks" class="col-sm-3">
         <div
@@ -25,7 +25,7 @@
             <p class="card-text"><b>Task status: </b>{{ task.status }}</p>
             <p class="card-text"><b>Due Date: </b>{{ task.dueDate }}</p>
             <button
-              *ngIf="!fakeUserService.isMentor()"
+              *ngIf="user.userType === 'Mentee'"
               (click)="deleteTask(task.id)"
               mat-icon-button
               class="example-icon"
@@ -34,7 +34,7 @@
               <mat-icon>delete</mat-icon>
             </button>
             <button
-              *ngIf="!fakeUserService.isMentor()"
+              *ngIf="user.userType === 'Mentee'"
               (click)="editTask(task)"
               mat-icon-button
               class="example-icon"
