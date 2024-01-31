@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg" *ngIf="user$ | async as user">
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <img
@@ -20,7 +20,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <div
-      *ngIf="user"
+      *ngIf="loggedInUser$ | async as user"
       class="collapse navbar-collapse justify-content-between"
       id="navbarNavAltMarkup"
     >
