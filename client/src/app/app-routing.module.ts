@@ -5,17 +5,25 @@ import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice
 import { MentorsComponent } from './components/mentors/mentors/mentors.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginRootComponent } from './no-auth/login-root/login-root.component';
+import { AuthService } from './auth.service';
 
-// TODO: User later
-// const authGuard = () => inject(AuthService).requireLoggedInGuard();
+const authGuard = () => inject(AuthService).requireLoggedInGuard();
+
 const routes: Routes = [
   { path: 'login', component: LoginRootComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'advice-wall', component: AdviceWallComponent },
-  { path: 'mentors', component: MentorsComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'advice-wall',
+    component: AdviceWallComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'mentors', component: MentorsComponent, canActivate: [authGuard] },
   { path: 'registration', component: RegistrationComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' },
 ];
 
 @NgModule({
