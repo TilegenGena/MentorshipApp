@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, interval } from 'rxjs';
+import { Observable, filter, interval } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MentorshipRequestModalComponent } from 'src/app/components/mentorship-request-modal/mentorship-request-modal.component';
 import { UserModalComponent } from 'src/app/components/user-modal/user-modal/user-modal.component';
@@ -27,6 +27,7 @@ export class NavbarAppComponent {
   requests!: any[];
   length!: number;
   currentMentorship: Mentorship | undefined;
+  loggedInUser$ = this.authService.getLoggedInUser();
 
   constructor(
     private userService: UserService,
@@ -56,16 +57,18 @@ export class NavbarAppComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    this.user$.subscribe(async (user) => {
-      this.userProfile = user;
-      if (user && this.fakeUserService.isMentor()) {
-        const mentees = await this.userService
-          .getMenteesForMentor()
-          .toPromise();
+    this.loggedInUser$
+      .pipe(filter((user) => user !== null))
+      .subscribe(async (user) => {
+        this.userProfile = user;
+        if (user && user.userType === 'Mentor') {
+          const mentees = await this.userService
+            .getMenteesForMentor()
+            .toPromise();
 
-        this.mentees = mentees;
-      }
-    });
+          this.mentees = mentees;
+        }
+      });
   }
 
   onSelectMentee(mentee: any): void {
