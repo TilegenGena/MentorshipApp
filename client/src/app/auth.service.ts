@@ -1,47 +1,47 @@
 import { Injectable } from '@angular/core';
-import { Observable, concat, firstValueFrom } from 'rxjs';
+import { Observable, Subject, firstValueFrom, merge } from 'rxjs';
 import { UserDTO } from './interfaces/user';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, of } from 'rxjs';
-import { catchError, map, share, tap, filter } from 'rxjs/operators';
+import { of } from 'rxjs';
+import {
+  catchError,
+  map,
+  tap,
+  ignoreElements,
+  shareReplay,
+  retry,
+} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private loggedInUserSubject$ = new BehaviorSubject<
-    UserDTO | null | undefined
-  >(undefined);
-  private currentLoggedInUser: UserDTO | null | undefined = null;
+  private loggedInUserSubject$ = new Subject<UserDTO | null>();
 
-  private loggedInUser$: Observable<UserDTO | null> = (
-    concat(
-      this.httpService.get<UserDTO | null>('/auth/get_logged_in_user').pipe(
-        tap({
-          next: (v) => this.loggedInUserSubject$.next(v),
-          error: (err) => this.loggedInUserSubject$.error(err),
-        }),
-        map(() => undefined)
-      ),
-      this.loggedInUserSubject$
-    ).pipe(filter((v) => v !== undefined)) as Observable<UserDTO | null>
-  ).pipe(share());
+  private loggedInUser$: Observable<UserDTO | null> = merge(
+    this._initialUserFetch().pipe(
+      tap((maybeUser) => this.loggedInUserSubject$.next(maybeUser)),
+      ignoreElements()
+    ),
+    this.loggedInUserSubject$
+  ).pipe(shareReplay(1));
 
-  constructor(private httpService: HttpClient, private router: Router) {
-    this.loggedInUserSubject$.subscribe({
-      next: (user) => {
-        this.currentLoggedInUser = user;
-      },
-    });
+  constructor(private httpService: HttpClient, private router: Router) {}
+
+  _initialUserFetch(): Observable<UserDTO | null> {
+    return this.httpService
+      .get<UserDTO | null>('/auth/get_logged_in_user')
+      .pipe(
+        retry({
+          count: 5,
+          delay: 1000,
+        })
+      );
   }
 
   getLoggedInUserPromise(): Promise<UserDTO | null> {
-    if (this.currentLoggedInUser !== undefined) {
-      return Promise.resolve(this.currentLoggedInUser);
-    } else {
-      return firstValueFrom(this.loggedInUser$);
-    }
+    return firstValueFrom(this.loggedInUserSubject$);
   }
 
   getLoggedInUser(): Observable<UserDTO | null> {
@@ -52,17 +52,23 @@ export class AuthService {
     return this.loggedInUser$;
   }
 
+  // Returns whether the user is logged in, and redirects the user to the login
+  // page if he/she is not:
   requireLoggedInGuard(): Observable<boolean> {
     return this.getLoggedInUser().pipe(
+      // If there's an error, don't fail in the guard: alert the user but treat
+      // it as being logged out:
       catchError((err) => {
         alert('Error getting logged-in user');
         return of(null);
       }),
+      // If the user is logged out, redirect them to the login page:
       tap((maybeUser) => {
         if (maybeUser === null) {
           this.router.navigate(['/login']);
         }
       }),
+      // Return true if the user is logged in and false otherwise:
       map((maybeUser) => maybeUser !== null)
     );
   }
