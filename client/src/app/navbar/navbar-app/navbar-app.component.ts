@@ -39,7 +39,7 @@ export class NavbarAppComponent {
   constructor(
     private userService: UserService,
     private ModalService: NgbModal,
-    private menteeService: SharedService,
+    private sharedService: SharedService,
     private router: Router,
     private requestService: RequestResponseService,
     private authService: AuthService,
@@ -72,6 +72,7 @@ export class NavbarAppComponent {
           tap((mentees) => {
             if (mentees.length) {
               this.selectedMenteeName = `${mentees[0].firstName} ${mentees[0].lastName}`;
+              this.sharedService.updateSelectedMentee(mentees[0].id);
               this.tasksForMentor$ = this.tasksService.getTasksForMentor(
                 mentees[0].id
               );
@@ -93,7 +94,7 @@ export class NavbarAppComponent {
 
   onSelectMentee(mentee: any): void {
     this.selectedMenteeName = `${mentee.firstName} ${mentee.lastName}`;
-    this.menteeService.updateSelectedMentee(mentee.id);
+    this.sharedService.updateSelectedMentee(mentee.id);
   }
 
   editUser() {

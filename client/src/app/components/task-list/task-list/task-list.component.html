@@ -1,4 +1,4 @@
-<div *ngIf="mentee$ | async as mentee">
+<div *ngIf="mentee$ | async as mentee; else mentorBlock">
   <div class="add-task-button">
     <button class="btn btn-success" (click)="createTask()">
       <b>Add Task</b>
@@ -47,11 +47,11 @@
   </div>
 </div>
 
-<ng-template>
+<ng-template #mentorBlock>
   <div *ngIf="mentor$ | async as mentor">
     <div
       class="container"
-      *ngIf="tasks$ | async as tasks"
+      *ngIf="tasksForMentor$ | async as tasks"
       style="padding: 10px"
     >
       <div class="row">

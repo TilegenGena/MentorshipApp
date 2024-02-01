@@ -8,6 +8,7 @@ import { Observable, filter, tap } from 'rxjs';
 import { UserDTO } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/auth.service';
 import { UserService } from 'src/app/services/user.service';
+import { SharedService } from 'src/app/shared.service';
 
 @Component({
   selector: 'app-task-list',
@@ -16,19 +17,20 @@ import { UserService } from 'src/app/services/user.service';
   providers: [TaskService],
 })
 export class TaskListComponent implements OnInit {
-  tasks: TaskDTO[] | undefined = [];
   activeMenteeId!: number;
   user$: Observable<UserDTO | null | undefined> =
     this.authService.getLoggedInUser();
   tasks$!: Observable<TaskDTO[] | null>;
   mentee$!: Observable<UserDTO | null>;
   mentor$!: Observable<UserDTO | null>;
+  tasksForMentor$!: Observable<TaskDTO[]>;
 
   constructor(
     private taskService: TaskService,
     private ngbModal: NgbModal,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private sharedService: SharedService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -36,6 +38,14 @@ export class TaskListComponent implements OnInit {
       filter((mentee) => mentee !== null),
       tap(() => {
         this.tasks$ = this.taskService.getTasksAsObservable();
+      })
+    );
+    this.mentor$ = this.userService.getLoggedInMentorAsObservable().pipe(
+      filter((mentor) => mentor !== null),
+      tap(() => {
+        this.sharedService.menteeChanged$.subscribe((menteeId) => {
+          this.tasksForMentor$ = this.taskService.getTasksForMentor(menteeId);
+        });
       })
     );
   }
