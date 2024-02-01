@@ -1,12 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject, tap } from 'rxjs';
 import { CreateUserDTO, UserDTO } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  menteesReplaySubject$ = new ReplaySubject<UserDTO[]>(1);
+
+  getMenteesAsObservable(): Observable<UserDTO[]> {
+    return this.menteesReplaySubject$.asObservable();
+  }
+
   constructor(private httpService: HttpClient) {}
 
   createUser(user: CreateUserDTO): Observable<CreateUserDTO> {
@@ -18,6 +24,11 @@ export class UserService {
   }
 
   getMenteesForMentor(): Observable<UserDTO[]> {
-    return this.httpService.get<UserDTO[]>('users/mentees-for-mentor');
+    return this.httpService.get<UserDTO[]>('users/mentees-for-mentor').pipe(
+      tap({
+        next: (mentees) => this.menteesReplaySubject$.next(mentees),
+        error: (err) => this.menteesReplaySubject$.error(err),
+      })
+    );
   }
 }

@@ -36,24 +36,29 @@
       </div>
       <div>
         <button
-          *ngIf="user.userType === 'Mentor'"
+          *ngIf="
+            (mentees$ | async)?.length && user.userType === 'Mentor';
+            else menteeBlock
+          "
           class="btn btn-warning"
           [matMenuTriggerFor]="menu"
         >
           <b>{{ selectedMenteeName }}</b>
         </button>
         <mat-menu #menu="matMenu">
-          <div *ngFor="let mentee of mentees">
+          <div *ngFor="let mentee of mentees$ | async">
             <button mat-menu-item (click)="onSelectMentee(mentee)">
               {{ mentee.firstName + " " + mentee.lastName }}
             </button>
           </div>
         </mat-menu>
-        <ng-template #menteeBlock>
-          <button (click)="getCurrentMentorship()" class="btn btn-warning">
-            <b>Mentorship</b>
-          </button>
-        </ng-template>
+        <ng-template #menteeBlock> </ng-template>
+        <button
+          *ngIf="currentMentorship && user.userType === 'Mentee'"
+          class="btn btn-warning"
+        >
+          <b>Mentorship</b>
+        </button>
 
         <button
           mat-icon-button
