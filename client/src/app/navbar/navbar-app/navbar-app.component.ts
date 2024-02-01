@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, interval } from 'rxjs';
+import { Observable, interval, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MentorshipRequestModalComponent } from 'src/app/components/mentorship-request-modal/mentorship-request-modal.component';
 import { UserModalComponent } from 'src/app/components/user-modal/user-modal/user-modal.component';
 import { Mentorship } from 'src/app/interfaces/mentorship-request';
+import { TaskDTO } from 'src/app/interfaces/task';
 import { UserDTO } from 'src/app/interfaces/user';
 import { RequestResponseService } from 'src/app/request-response.service';
+import { TaskService } from 'src/app/services/task.service';
 import { UserService } from 'src/app/services/user.service';
 import { SharedService } from 'src/app/shared.service';
 
@@ -28,6 +30,11 @@ export class NavbarAppComponent {
   currentMentorship: Mentorship | undefined;
   loggedInUser$ = this.authService.getLoggedInUser();
   mentees$!: Observable<UserDTO[]>;
+  mentor$!: Observable<UserDTO | null>;
+  mentee$!: Observable<UserDTO | null>;
+
+  tasksForMentor$!: Observable<TaskDTO[]>;
+  menteesForMentor$!: Observable<UserDTO[] | null>;
 
   constructor(
     private userService: UserService,
@@ -36,7 +43,8 @@ export class NavbarAppComponent {
     private router: Router,
     private requestService: RequestResponseService,
     private authService: AuthService,
-    private requestResponseService: RequestResponseService
+    private requestResponseService: RequestResponseService,
+    private tasksService: TaskService
   ) {
     // TODO: Decrease it to 10 seconds
     interval(1000000).subscribe((x) => {
@@ -57,18 +65,30 @@ export class NavbarAppComponent {
   }
 
   async ngOnInit(): Promise<void> {
-    this.loggedInUser$.pipe().subscribe((user) => {
-      this.userProfile = user;
-      if (user?.userType === 'Mentor') {
-        this.userService.getMenteesForMentor().subscribe((mentees) => {
-          if (mentees.length) {
-            this.selectedMenteeName = `${mentees[0].firstName} ${mentees[0].lastName}`;
-          }
-        });
-      } else if (user?.userType === 'Mentee') {
-        this.getCurrentMentorship();
-      }
-    });
+    this.mentor$ = this.userService.getLoggedInMentorAsObservable().pipe(
+      tap((user) => {
+        this.userProfile = user;
+        this.menteesForMentor$ = this.userService.getMenteesForMentor().pipe(
+          tap((mentees) => {
+            if (mentees.length) {
+              this.selectedMenteeName = `${mentees[0].firstName} ${mentees[0].lastName}`;
+              this.tasksForMentor$ = this.tasksService.getTasksForMentor(
+                mentees[0].id
+              );
+            }
+          })
+        );
+      })
+    );
+
+    this.mentee$ = this.userService.getLoggedInMenteeAsObservable().pipe(
+      tap((user) => {
+        if (user) {
+          this.userProfile = user;
+          this.getCurrentMentorship();
+        }
+      })
+    );
   }
 
   onSelectMentee(mentee: any): void {

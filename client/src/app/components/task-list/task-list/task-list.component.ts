@@ -4,10 +4,10 @@ import { TaskDTO } from 'src/app/interfaces/task';
 import { TaskService } from 'src/app/services/task.service';
 import { TaskModalComponent } from '../../task-modal/task-modal/task-modal.component';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
-import { FakeUserService } from 'src/app/fake-login/fake-login.service';
+import { Observable, filter, tap } from 'rxjs';
 import { UserDTO } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/auth.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-task-list',
@@ -20,17 +20,24 @@ export class TaskListComponent implements OnInit {
   activeMenteeId!: number;
   user$: Observable<UserDTO | null | undefined> =
     this.authService.getLoggedInUser();
-  tasks$!: Observable<TaskDTO[]>;
+  tasks$!: Observable<TaskDTO[] | null>;
+  mentee$!: Observable<UserDTO | null>;
+  mentor$!: Observable<UserDTO | null>;
 
   constructor(
     private taskService: TaskService,
     private ngbModal: NgbModal,
-    protected fakeUserService: FakeUserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private userService: UserService
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.tasks$ = this.taskService.getTasksAsObservable();
+    this.mentee$ = this.userService.getLoggedInMenteeAsObservable().pipe(
+      filter((mentee) => mentee !== null),
+      tap(() => {
+        this.tasks$ = this.taskService.getTasksAsObservable();
+      })
+    );
   }
 
   deleteTask(id: number) {
