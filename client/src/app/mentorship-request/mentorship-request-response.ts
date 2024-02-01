@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RequestMentorshipService } from '../services/request-mentorship.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-mentorship-request',
@@ -15,7 +16,8 @@ export class MentorshipRequestComponent implements OnInit {
   submitting!: Promise<void>;
   constructor(
     private mentorshipRequestService: RequestMentorshipService,
-    protected activeModal: NgbActiveModal
+    protected activeModal: NgbActiveModal,
+    private spinnerService: NgxSpinnerService
   ) {}
 
   ngOnInit() {
@@ -39,6 +41,7 @@ export class MentorshipRequestComponent implements OnInit {
 
   async submitForm() {
     if (this.requestForm.valid) {
+      this.spinnerService.show();
       (
         await this.mentorshipRequestService.requestMentorship(
           this.requestForm.value
@@ -46,7 +49,10 @@ export class MentorshipRequestComponent implements OnInit {
       )
         .toPromise()
         .then(() => {
-          this.activeModal.close(this.requestForm.value);
+          setTimeout(() => {
+            this.activeModal.close(this.requestForm.value);
+            this.spinnerService.hide();
+          }, 2000);
         });
     }
   }

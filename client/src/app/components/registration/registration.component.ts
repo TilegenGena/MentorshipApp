@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { RegistrationDTO } from 'src/app/interfaces/registration';
 import { UserService } from 'src/app/services/user.service';
 
@@ -20,7 +21,11 @@ export class RegistrationComponent {
   // @Input() user!: RegistrationDTO;
   registrationForm!: FormGroup;
   submitting!: Promise<void>;
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private spinnerService: NgxSpinnerService
+  ) {}
 
   ngOnInit() {
     this.registrationForm = new FormGroup(
@@ -45,8 +50,10 @@ export class RegistrationComponent {
 
   async submitForm() {
     if (this.registrationForm.valid) {
+      this.spinnerService.show();
       this.userService.createUser(this.registrationForm.value).subscribe(() => {
         this.router.navigate(['/login']);
+        this.spinnerService.hide();
       });
     }
   }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { UserDTO } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -15,6 +16,7 @@ export class UserModalComponent implements OnInit {
   userForm!: FormGroup;
   submitting!: Promise<void>;
   constructor(
+    private spinnerService: NgxSpinnerService,
     private userService: UserService,
     protected activeModal: NgbActiveModal
   ) {}
@@ -44,10 +46,14 @@ export class UserModalComponent implements OnInit {
 
   async submitForm() {
     if (this.userForm.valid) {
+      this.spinnerService.show();
       (await this.userService.editUser(this.userForm.value))
         .toPromise()
         .then(() => {
-          this.activeModal.close(this.userForm.value);
+          setTimeout(() => {
+            this.activeModal.close(this.userForm.value);
+            this.spinnerService.hide();
+          }, 2000);
         });
     }
   }

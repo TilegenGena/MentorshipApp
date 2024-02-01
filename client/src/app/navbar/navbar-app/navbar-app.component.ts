@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MentorshipRequestModalComponent } from 'src/app/components/mentorship-request-modal/mentorship-request-modal.component';
@@ -37,7 +38,8 @@ export class NavbarAppComponent {
     private selectedMenteeService: SelectedMenteeService,
     private router: Router,
     private authService: AuthService,
-    private mentorshipService: MentorshipService
+    private mentorshipService: MentorshipService,
+    private spinnerService: NgxSpinnerService
   ) {
     this.mentees$ = this.userService.getMenteesAsObservable();
   }
@@ -86,8 +88,10 @@ export class NavbarAppComponent {
   }
 
   logout() {
+    this.spinnerService.show();
     this.authService.logOut().subscribe(() => {
       this.router.navigate(['/login']);
+      this.spinnerService.hide();
     });
   }
 
