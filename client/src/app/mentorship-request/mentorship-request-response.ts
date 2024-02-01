@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MentorshipRequestService } from '../services/mentorship-request.service';
+import { RequestMentorshipService } from '../services/request-mentorship.service';
 
 @Component({
   selector: 'app-mentorship-request',
@@ -14,7 +14,7 @@ export class MentorshipRequestComponent implements OnInit {
   requestForm!: FormGroup;
   submitting!: Promise<void>;
   constructor(
-    private mentorshipRequest: MentorshipRequestService,
+    private mentorshipRequestService: RequestMentorshipService,
     protected activeModal: NgbActiveModal
   ) {}
 
@@ -39,7 +39,11 @@ export class MentorshipRequestComponent implements OnInit {
 
   async submitForm() {
     if (this.requestForm.valid) {
-      (await this.mentorshipRequest.requestMentorship(this.requestForm.value))
+      (
+        await this.mentorshipRequestService.requestMentorship(
+          this.requestForm.value
+        )
+      )
         .toPromise()
         .then(() => {
           this.activeModal.close(this.requestForm.value);

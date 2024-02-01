@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, filter, tap } from 'rxjs';
 import { CreateUserDTO, UserDTO } from '../interfaces/user';
 import { AuthService } from '../auth.service';
+import { IMentor } from '../interfaces/mentor';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,10 @@ export class UserService {
     private httpService: HttpClient,
     private authService: AuthService
   ) {}
+
+  async getMentors(): Promise<Observable<IMentor[]>> {
+    return this.httpService.get<IMentor[]>('users/mentors');
+  }
 
   getLoggedInMentorAsObservable(): Observable<UserDTO | null> {
     return this.loggedInMentor$;

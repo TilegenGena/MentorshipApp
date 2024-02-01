@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class SharedService {
+export class SelectedMenteeService {
   public menteeChanged = new Subject<number>();
   menteeChanged$ = this.menteeChanged.asObservable();
 

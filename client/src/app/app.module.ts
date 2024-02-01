@@ -30,7 +30,6 @@ import { UserModalComponent } from './components/user-modal/user-modal/user-moda
 import { MentorshipRequestComponent } from './mentorship-request/mentorship-request-response';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { FakeLoginComponent } from './fake-login/fake-login.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MentorshipRequestModalComponent } from './components/mentorship-request-modal/mentorship-request-modal.component';
 import { NoAuthModule } from './no-auth/no-auth.module';
@@ -49,7 +48,6 @@ import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice
     UserModalComponent,
     MentorshipRequestComponent,
     RegistrationComponent,
-    FakeLoginComponent,
     MentorshipRequestModalComponent,
     AdviceWallComponent,
   ],
