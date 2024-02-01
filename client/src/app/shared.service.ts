@@ -5,10 +5,10 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class SharedService {
-  private menteeChanged = new Subject<number>();
+  public menteeChanged = new Subject<number>();
   menteeChanged$ = this.menteeChanged.asObservable();
 
-  updateSelectedMentee(menteeName: number): void {
-    this.menteeChanged.next(menteeName);
+  updateSelectedMentee(menteeId: number): void {
+    this.menteeChanged.next(menteeId);
   }
 }
