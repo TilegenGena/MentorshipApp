@@ -1,5 +1,5 @@
-<div *ngIf="user$ | async as user">
-  <div *ngIf="user.userType === 'Mentee'" class="add-task-button">
+<div *ngIf="mentee$ | async as mentee">
+  <div class="add-task-button">
     <button class="btn btn-success" (click)="createTask()">
       <b>Add Task</b>
     </button>
@@ -25,7 +25,6 @@
             <p class="card-text"><b>Task status: </b>{{ task.status }}</p>
             <p class="card-text"><b>Due Date: </b>{{ task.dueDate }}</p>
             <button
-              *ngIf="user.userType === 'Mentee'"
               (click)="deleteTask(task.id)"
               mat-icon-button
               class="example-icon"
@@ -34,7 +33,6 @@
               <mat-icon>delete</mat-icon>
             </button>
             <button
-              *ngIf="user.userType === 'Mentee'"
               (click)="editTask(task)"
               mat-icon-button
               class="example-icon"
@@ -48,3 +46,38 @@
     </div>
   </div>
 </div>
+
+<ng-template>
+  <div *ngIf="mentor$ | async as mentor">
+    <div
+      class="container"
+      *ngIf="tasks$ | async as tasks"
+      style="padding: 10px"
+    >
+      <div class="row">
+        <div *ngFor="let task of tasks" class="col-sm-3">
+          <div
+            class="card mb-3"
+            [ngClass]="{
+            'bg-light': task.status == 'To Do',
+            'bg-warning': task.status == 'In Progress',
+            'bg-danger': task.status == 'Stuck',
+            'bg-success': task.status == 'Done',
+            'text-white': ['Done', 'Stuck', ].includes(task.status),
+          }"
+            style="max-width: 18rem"
+          >
+            <div class="card-body">
+              <h5 class="card-title"><b>Title: </b>{{ task.title }}</h5>
+              <p class="card-text">
+                <b>Description: </b>{{ task.description }}
+              </p>
+              <p class="card-text"><b>Task status: </b>{{ task.status }}</p>
+              <p class="card-text"><b>Due Date: </b>{{ task.dueDate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

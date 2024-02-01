@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   Observable,
+  ReplaySubject,
   Subject,
   ignoreElements,
   merge,
@@ -15,6 +16,7 @@ import { TaskDTO } from '../interfaces/task';
 })
 export class TaskService {
   private tasksForMenteeSubject$ = new Subject<TaskDTO[]>();
+  tasksForMentorReplaySubject$ = new ReplaySubject<TaskDTO[]>(1);
   tasksForMentee$ = merge(
     this.getTasks().pipe(
       tap({
@@ -26,6 +28,19 @@ export class TaskService {
   ).pipe(shareReplay(1));
 
   constructor(private httpService: HttpClient) {}
+
+  getTasksForMentorObservable(): Observable<TaskDTO[] | null> {
+    return this.tasksForMentorReplaySubject$;
+  }
+
+  getTasksForMentor(menteeId: number): Observable<TaskDTO[]> {
+    return this.httpService.get<TaskDTO[]>(`task/${menteeId}`).pipe(
+      tap({
+        next: (mentees) => this.tasksForMentorReplaySubject$.next(mentees),
+        error: (err) => this.tasksForMentorReplaySubject$.error(err),
+      })
+    );
+  }
 
   getTasksAsObservable(): Observable<TaskDTO[]> {
     return this.tasksForMentee$;

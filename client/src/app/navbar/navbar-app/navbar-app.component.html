@@ -20,43 +20,61 @@
       <mat-icon>menu</mat-icon>
     </button>
     <div
-      *ngIf="loggedInUser$ | async as user"
+      *ngIf="mentor$ | async as user"
       class="collapse navbar-collapse justify-content-between"
       id="navbarNavAltMarkup"
     >
       <div class="navbar-nav">
         <a class="nav-link" routerLink="/dashboard">Dashboard</a>
         <a class="nav-link" routerLink="/advice-wall">Advice-wall</a>
-        <a
-          *ngIf="user.userType == 'Mentee'"
-          class="nav-link"
-          routerLink="/mentors"
-          >Mentors</a
-        >
       </div>
       <div>
-        <button
-          *ngIf="
-            (mentees$ | async)?.length && user.userType === 'Mentor';
-            else menteeBlock
-          "
-          class="btn btn-warning"
-          [matMenuTriggerFor]="menu"
-        >
+        <button class="btn btn-warning" [matMenuTriggerFor]="menu">
           <b>{{ selectedMenteeName }}</b>
         </button>
         <mat-menu #menu="matMenu">
-          <div *ngFor="let mentee of mentees$ | async">
-            <button mat-menu-item (click)="onSelectMentee(mentee)">
-              {{ mentee.firstName + " " + mentee.lastName }}
-            </button>
+          <div *ngIf="menteesForMentor$ | async as mentees">
+            <div *ngFor="let mentee of mentees">
+              <button mat-menu-item (click)="onSelectMentee(mentee)">
+                {{ mentee.firstName + " " + mentee.lastName }}
+              </button>
+            </div>
           </div>
         </mat-menu>
-        <ng-template #menteeBlock> </ng-template>
+
         <button
-          *ngIf="currentMentorship && user.userType === 'Mentee'"
-          class="btn btn-warning"
+          mat-icon-button
+          class="btn btn-action"
+          (click)="openNotification()"
         >
+          <mat-icon
+            [matBadge]="length"
+            matBadgeColor="warn"
+            [matBadgeHidden]="length === 0"
+            >notifications</mat-icon
+          >
+        </button>
+        <button type="button" class="btn btn-action" (click)="editUser()">
+          <b>{{ userProfile?.firstName }} {{ userProfile?.lastName }}</b>
+        </button>
+        <button type="button" (click)="logout()" class="btn btn-action">
+          <mat-icon mat-icon-button>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div
+      *ngIf="mentee$ | async as user"
+      class="collapse navbar-collapse justify-content-between"
+      id="navbarNavAltMarkup"
+    >
+      <div class="navbar-nav">
+        <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        <a class="nav-link" routerLink="/advice-wall">Advice-wall</a>
+        <a class="nav-link" routerLink="/mentors">Mentors</a>
+      </div>
+      <div>
+        <button *ngIf="currentMentorship" class="btn btn-warning">
           <b>Mentorship</b>
         </button>
 
@@ -73,7 +91,7 @@
           >
         </button>
         <button type="button" class="btn btn-action" (click)="editUser()">
-          <b>{{ userProfile?.firstName }} {{ userProfile?.lastName }}</b>
+          <b>{{ user.firstName }} {{ user.lastName }}</b>
         </button>
         <button type="button" (click)="logout()" class="btn btn-action">
           <mat-icon mat-icon-button>logout</mat-icon>
