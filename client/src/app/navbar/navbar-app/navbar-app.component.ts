@@ -8,9 +8,9 @@ import { UserModalComponent } from 'src/app/components/user-modal/user-modal/use
 import { Mentorship } from 'src/app/interfaces/mentorship-request';
 import { TaskDTO } from 'src/app/interfaces/task';
 import { UserDTO } from 'src/app/interfaces/user';
-import { RequestResponseService } from 'src/app/request-response.service';
+import { MentorshipService } from 'src/app/services/mentorship.service';
+import { SelectedMenteeService } from 'src/app/services/selected-mentee.service';
 import { UserService } from 'src/app/services/user.service';
-import { SharedService } from 'src/app/shared.service';
 
 @Component({
   selector: 'navbar-app-root',
@@ -34,11 +34,10 @@ export class NavbarAppComponent {
   constructor(
     private userService: UserService,
     private ModalService: NgbModal,
-    private sharedService: SharedService,
+    private selectedMenteeService: SelectedMenteeService,
     private router: Router,
-    private requestService: RequestResponseService,
     private authService: AuthService,
-    private requestResponseService: RequestResponseService
+    private mentorshipService: MentorshipService
   ) {
     this.mentees$ = this.userService.getMenteesAsObservable();
   }
@@ -51,7 +50,7 @@ export class NavbarAppComponent {
           tap((mentees) => {
             if (mentees.length) {
               this.selectedMenteeName = `${mentees[0].firstName} ${mentees[0].lastName}`;
-              this.sharedService.updateSelectedMentee(mentees[0].id);
+              this.selectedMenteeService.updateSelectedMentee(mentees[0].id);
             }
           })
         );
@@ -70,7 +69,7 @@ export class NavbarAppComponent {
 
   onSelectMentee(mentee: any): void {
     this.selectedMenteeName = `${mentee.firstName} ${mentee.lastName}`;
-    this.sharedService.updateSelectedMentee(mentee.id);
+    this.selectedMenteeService.updateSelectedMentee(mentee.id);
   }
 
   editUser() {
@@ -101,7 +100,7 @@ export class NavbarAppComponent {
   }
 
   getCurrentMentorship() {
-    this.requestResponseService
+    this.mentorshipService
       .getCurrentMentorship()
       .toPromise()
       .then((currentMentorship) => {

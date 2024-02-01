@@ -36,7 +36,7 @@ export class NgbdModal1Content {
 
 import { Component, Input } from '@angular/core';
 import { MentorshipRequestGetDTO } from 'src/app/interfaces/mentorship-request';
-import { RequestResponseService } from 'src/app/request-response.service';
+import { RequestMentorshipService } from 'src/app/services/request-mentorship.service';
 
 @Component({
   selector: 'app-mentorship-request-modal',
@@ -51,7 +51,7 @@ export class MentorshipRequestModalComponent {
   constructor(
     protected activeModal: NgbActiveModal,
     private ngbModal: NgbModal,
-    private requestResponseService: RequestResponseService
+    private requestResponseService: RequestMentorshipService
   ) {}
 
   open(userInfo: any) {
