@@ -29,8 +29,11 @@ export class UserService {
       ],
     });
     const mentees = mentorships.map((m) => m.mentee);
+    const uniqueMentees = Array.from(
+      new Set(mentees.map((user) => user.id)),
+    ).map((uniqueId) => mentees.find((user) => user.id === uniqueId));
 
-    return mentees;
+    return uniqueMentees;
   }
 
   async createUser(user: any): Promise<User> {

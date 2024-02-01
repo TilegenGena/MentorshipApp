@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, filter, interval } from 'rxjs';
+import { Observable, interval } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MentorshipRequestModalComponent } from 'src/app/components/mentorship-request-modal/mentorship-request-modal.component';
 import { UserModalComponent } from 'src/app/components/user-modal/user-modal/user-modal.component';
-import { FakeUserService } from 'src/app/fake-login/fake-login.service';
 import { Mentorship } from 'src/app/interfaces/mentorship-request';
 import { UserDTO } from 'src/app/interfaces/user';
 import { RequestResponseService } from 'src/app/request-response.service';
@@ -28,12 +27,12 @@ export class NavbarAppComponent {
   length!: number;
   currentMentorship: Mentorship | undefined;
   loggedInUser$ = this.authService.getLoggedInUser();
+  mentees$!: Observable<UserDTO[]>;
 
   constructor(
     private userService: UserService,
     private ModalService: NgbModal,
     private menteeService: SharedService,
-    private fakeUserService: FakeUserService,
     private router: Router,
     private requestService: RequestResponseService,
     private authService: AuthService,
@@ -54,25 +53,26 @@ export class NavbarAppComponent {
         }
       });
     });
+    this.mentees$ = this.userService.getMenteesAsObservable();
   }
 
   async ngOnInit(): Promise<void> {
-    this.loggedInUser$
-      .pipe(filter((user) => user !== null))
-      .subscribe(async (user) => {
-        this.userProfile = user;
-        if (user && user.userType === 'Mentor') {
-          const mentees = await this.userService
-            .getMenteesForMentor()
-            .toPromise();
-
-          this.mentees = mentees;
-        }
-      });
+    this.loggedInUser$.pipe().subscribe((user) => {
+      this.userProfile = user;
+      if (user?.userType === 'Mentor') {
+        this.userService.getMenteesForMentor().subscribe((mentees) => {
+          if (mentees.length) {
+            this.selectedMenteeName = `${mentees[0].firstName} ${mentees[0].lastName}`;
+          }
+        });
+      } else if (user?.userType === 'Mentee') {
+        this.getCurrentMentorship();
+      }
+    });
   }
 
   onSelectMentee(mentee: any): void {
-    this.selectedMenteeName = mentee.firstName + ' ' + mentee.lastName;
+    this.selectedMenteeName = `${mentee.firstName} ${mentee.lastName}`;
     this.menteeService.updateSelectedMentee(mentee.id);
   }
 
