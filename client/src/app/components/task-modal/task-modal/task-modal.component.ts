@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { TaskDTO } from 'src/app/interfaces/task';
 import { TaskService } from 'src/app/services/task.service';
 
@@ -13,7 +14,10 @@ export class TaskModalComponent {
   @Input() task!: TaskDTO;
   taskForm!: FormGroup;
   submitting!: Promise<void>;
-  constructor(protected activeModal: NgbActiveModal) {}
+  constructor(
+    protected activeModal: NgbActiveModal,
+    private spinnerService: NgxSpinnerService
+  ) {}
 
   ngOnInit() {
     this.taskForm = new FormGroup({
@@ -39,7 +43,11 @@ export class TaskModalComponent {
 
   async submitForm() {
     if (this.taskForm.valid) {
-      this.activeModal.close(this.taskForm.value);
+      this.spinnerService.show();
+      setTimeout(() => {
+        this.activeModal.close(this.taskForm.value);
+        this.spinnerService.hide();
+      }, 2000);
     }
   }
 }

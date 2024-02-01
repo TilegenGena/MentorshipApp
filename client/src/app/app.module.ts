@@ -35,6 +35,7 @@ import { MentorshipRequestModalComponent } from './components/mentorship-request
 import { NoAuthModule } from './no-auth/no-auth.module';
 import { RouterModule } from '@angular/router';
 import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice-wall.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice
     MatBadgeModule,
     NoAuthModule,
     RouterModule,
+    NgxSpinnerModule,
   ],
   providers: [NgbActiveModal],
   bootstrap: [AppComponent],

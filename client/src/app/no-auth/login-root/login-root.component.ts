@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from 'src/app/auth.service';
 
 @Component({
@@ -14,7 +15,8 @@ export class LoginRootComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private spinnerService: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -26,10 +28,12 @@ export class LoginRootComponent {
 
   submitLoginForm() {
     if (this.loginForm.valid) {
+      this.spinnerService.show();
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
       this.authService.logIn(email, password).subscribe((user) => {
         this.router.navigate(['/dashboard']);
+        this.spinnerService.hide();
       });
     }
   }

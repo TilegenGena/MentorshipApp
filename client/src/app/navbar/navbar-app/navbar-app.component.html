@@ -101,6 +101,14 @@
         </button>
         <button type="button" (click)="logout()" class="btn btn-action">
           <mat-icon mat-icon-button>logout</mat-icon>
+          <ngx-spinner
+            bdColor="rgba(0, 0, 0, .38)"
+            size="large"
+            color="white"
+            type="ball-scale-multiple"
+            [fullScreen]="true"
+            ><p style="color: white">Please wait...</p></ngx-spinner
+          >
         </button>
       </div>
     </div>
