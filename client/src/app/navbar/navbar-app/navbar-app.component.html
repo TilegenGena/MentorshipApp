@@ -24,43 +24,49 @@
       class="collapse navbar-collapse justify-content-between"
       id="navbarNavAltMarkup"
     >
-      <div class="navbar-nav">
-        <a class="nav-link" routerLink="/dashboard">Dashboard</a>
-        <a class="nav-link" routerLink="/advice-wall">Advice-wall</a>
-      </div>
-      <div>
-        <button class="btn btn-warning" [matMenuTriggerFor]="menu">
-          <b>{{ selectedMenteeName }}</b>
-        </button>
-        <mat-menu #menu="matMenu">
-          <div *ngIf="menteesForMentor$ | async as mentees">
-            <div *ngFor="let mentee of mentees">
-              <button mat-menu-item (click)="onSelectMentee(mentee)">
-                {{ mentee.firstName + " " + mentee.lastName }}
-              </button>
-            </div>
-          </div>
-        </mat-menu>
-
-        <button
-          mat-icon-button
-          class="btn btn-action"
-          (click)="openNotification()"
-        >
-          <mat-icon
-            [matBadge]="length"
-            matBadgeColor="warn"
-            [matBadgeHidden]="length === 0"
-            >notifications</mat-icon
+      <ng-container *ngIf="menteesForMentor$ | async as mentees">
+        <div class="navbar-nav">
+          <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+          <a class="nav-link" routerLink="/advice-wall">Advice-wall</a>
+        </div>
+        <div>
+          <button
+            *ngIf="mentees.length"
+            class="btn btn-warning"
+            [matMenuTriggerFor]="menu"
           >
-        </button>
-        <button type="button" class="btn btn-action" (click)="editUser()">
-          <b>{{ userProfile?.firstName }} {{ userProfile?.lastName }}</b>
-        </button>
-        <button type="button" (click)="logout()" class="btn btn-action">
-          <mat-icon mat-icon-button>logout</mat-icon>
-        </button>
-      </div>
+            <b>{{ selectedMenteeName }}</b>
+          </button>
+          <mat-menu #menu="matMenu">
+            <div>
+              <div *ngFor="let mentee of mentees">
+                <button mat-menu-item (click)="onSelectMentee(mentee)">
+                  {{ mentee.firstName + " " + mentee.lastName }}
+                </button>
+              </div>
+            </div>
+          </mat-menu>
+
+          <button
+            mat-icon-button
+            class="btn btn-action"
+            (click)="openNotification()"
+          >
+            <mat-icon
+              [matBadge]="length"
+              matBadgeColor="warn"
+              [matBadgeHidden]="length === 0"
+              >notifications</mat-icon
+            >
+          </button>
+          <button type="button" class="btn btn-action" (click)="editUser()">
+            <b>{{ userProfile?.firstName }} {{ userProfile?.lastName }}</b>
+          </button>
+          <button type="button" (click)="logout()" class="btn btn-action">
+            <mat-icon mat-icon-button>logout</mat-icon>
+          </button>
+        </div>
+      </ng-container>
     </div>
 
     <div
