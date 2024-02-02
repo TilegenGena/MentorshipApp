@@ -24,11 +24,17 @@
       <button
         type="button"
         class="btn btn-success mr-1"
-        (click)="accept(element)"
+        (click)="acceptRequest(element)"
       >
         Accept
       </button>
-      <button type="button" class="btn btn-danger">Decline</button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="declineRequest(element)"
+      >
+        Decline
+      </button>
     </td>
   </ng-container>
 
