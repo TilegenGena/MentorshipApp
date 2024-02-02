@@ -1,15 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, tap } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  concatMap,
+  share,
+  takeUntil,
+  tap,
+  timer,
+} from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { MentorshipRequestModalComponent } from 'src/app/components/mentorship-request-modal/mentorship-request-modal.component';
+import { MentorshipResponseModalComponent } from 'src/app/components/mentorship-response-modal/mentorship-response-modal.component';
 import { UserModalComponent } from 'src/app/components/user-modal/user-modal/user-modal.component';
 import { Mentorship } from 'src/app/interfaces/mentorship-request';
 import { TaskDTO } from 'src/app/interfaces/task';
 import { UserDTO } from 'src/app/interfaces/user';
 import { MentorshipService } from 'src/app/services/mentorship.service';
+import { RequestMentorshipService } from 'src/app/services/request-mentorship.service';
+import { ResponseMentorshipService } from 'src/app/services/response-mentorship.service';
 import { SelectedMenteeService } from 'src/app/services/selected-mentee.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -19,11 +29,13 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['navbar-app.component.scss'],
   providers: [UserService],
 })
-export class NavbarAppComponent {
+export class NavbarAppComponent implements OnDestroy {
   userProfile: UserDTO | undefined | null;
   selectedMenteeName: string = 'Mentorship';
   requests!: any[];
   length!: number;
+  responses!: any[];
+  responsesLength!: number;
   currentMentorship: Mentorship | undefined;
   mentees$!: Observable<UserDTO[]>;
   mentor$!: Observable<UserDTO | null>;
@@ -31,6 +43,7 @@ export class NavbarAppComponent {
 
   tasksForMentor$!: Observable<TaskDTO[]>;
   menteesForMentor$!: Observable<UserDTO[] | null>;
+  private unsubscribe = new Subject<void>();
 
   constructor(
     private userService: UserService,
@@ -39,7 +52,8 @@ export class NavbarAppComponent {
     private router: Router,
     private authService: AuthService,
     private mentorshipService: MentorshipService,
-    private spinnerService: NgxSpinnerService
+    private requestMentorshipService: RequestMentorshipService,
+    private responseMentorshipService: ResponseMentorshipService
   ) {
     this.mentees$ = this.userService.getMenteesAsObservable();
   }
@@ -47,6 +61,18 @@ export class NavbarAppComponent {
   async ngOnInit(): Promise<void> {
     this.mentor$ = this.userService.getLoggedInMentorAsObservable().pipe(
       tap((user) => {
+        if (user) {
+          const timerObservable = timer(0, 10 * 1000)
+            .pipe(concatMap(() => this.requestMentorshipService.getRequests()))
+            .pipe(share());
+
+          timerObservable
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe((requests) => {
+              this.requests = requests;
+              this.length = requests.length;
+            });
+        }
         this.userProfile = user;
         this.menteesForMentor$ = this.userService.getMenteesForMentor().pipe(
           tap((mentees) => {
@@ -64,6 +90,12 @@ export class NavbarAppComponent {
         if (user) {
           this.userProfile = user;
           this.getCurrentMentorship();
+          this.responseMentorshipService
+            .getResponse()
+            .subscribe((responses) => {
+              this.responses = responses;
+              this.responsesLength = responses.length;
+            });
         }
       })
     );
@@ -101,6 +133,15 @@ export class NavbarAppComponent {
     modalRef.componentInstance.length = this.length;
   }
 
+  seeResponse() {
+    const modalRef = this.ModalService.open(
+      MentorshipResponseModalComponent,
+      {}
+    );
+    modalRef.componentInstance.responses = this.responses;
+    modalRef.componentInstance.responseLength = this.responsesLength;
+  }
+
   getCurrentMentorship() {
     this.mentorshipService
       .getCurrentMentorship()
@@ -110,5 +151,10 @@ export class NavbarAppComponent {
           this.currentMentorship = currentMentorship;
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

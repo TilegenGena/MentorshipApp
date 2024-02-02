@@ -84,15 +84,11 @@
           <b>Mentorship</b>
         </button>
 
-        <button
-          mat-icon-button
-          class="btn btn-action"
-          (click)="openNotification()"
-        >
+        <button mat-icon-button class="btn btn-action" (click)="seeResponse()">
           <mat-icon
-            [matBadge]="length"
+            [matBadge]="responsesLength"
             matBadgeColor="warn"
-            [matBadgeHidden]="length === 0"
+            [matBadgeHidden]="responsesLength === 0"
             >notifications</mat-icon
           >
         </button>

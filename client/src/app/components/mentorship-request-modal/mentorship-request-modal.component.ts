@@ -59,8 +59,14 @@ export class MentorshipRequestModalComponent {
     modalRef.componentInstance.userInfo = userInfo;
   }
 
-  accept(row: any) {
-    this.requestResponseService.acceptRequest(row.id).subscribe(() => {
+  acceptRequest(request: any) {
+    this.requestResponseService.acceptRequest(request.id).subscribe(() => {
+      this.activeModal.close();
+    });
+  }
+
+  declineRequest(request: any) {
+    this.requestResponseService.declineRequest(request.id).subscribe(() => {
       this.activeModal.close();
     });
   }

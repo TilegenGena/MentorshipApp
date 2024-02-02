@@ -35,6 +35,7 @@ import { NoAuthModule } from './no-auth/no-auth.module';
 import { RouterModule } from '@angular/router';
 import { AdviceWallComponent } from './components/advice-wall/advice-wall/advice-wall.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MentorshipResponseModalComponent } from './components/mentorship-response-modal/mentorship-response-modal.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MentorshipRequestComponent,
     MentorshipRequestModalComponent,
     AdviceWallComponent,
+    MentorshipResponseModalComponent,
   ],
   imports: [
     BrowserModule,
