@@ -22,6 +22,7 @@ export class MentorshipService {
       await MentorshipResponse.create({
         requestId: request.id,
         responseStatus: MentorshipResponseDecision.ACCEPTED,
+        response_seen_by_value: false,
       } as MentorshipResponse);
 
       request.set({ requestStatus: RequestStatus.RESOLVED });
@@ -35,6 +36,24 @@ export class MentorshipService {
       } as Mentorship);
     } else {
       throw new NotFoundException(`Request is not found`);
+    }
+  }
+
+  async declineMentorship(id: number): Promise<void> {
+    const request = await MentorshipRequest.findOne({
+      where: { id },
+      include: { model: MentorshipResponse, as: 'mentorshipResponse' },
+    });
+    if (request) {
+      await MentorshipResponse.create({
+        requestId: request.id,
+        responseStatus: MentorshipResponseDecision.DECLINED,
+        response_seen_by_value: false,
+      } as MentorshipResponse);
+      request.set({ requestStatus: RequestStatus.RESOLVED });
+      await request.save();
+    } else {
+      throw new NotFoundException('Request is not found');
     }
   }
 

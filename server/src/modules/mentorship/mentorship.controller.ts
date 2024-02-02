@@ -14,10 +14,17 @@ export class MentorshipController {
   constructor(private mentorship: MentorshipService) {}
 
   @Post('accept')
-  async createMentorshipRequest(
+  async createMentorship(
     @Body() requestId: { requestId: number },
   ): Promise<void> {
     await this.mentorship.createMentorship(requestId.requestId);
+  }
+
+  @Post('decline')
+  async declineMentorship(
+    @Body() requestId: { requestId: number },
+  ): Promise<void> {
+    await this.mentorship.declineMentorship(requestId.requestId);
   }
 
   @Get('')

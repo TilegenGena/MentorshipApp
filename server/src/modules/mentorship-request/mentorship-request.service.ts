@@ -9,11 +9,11 @@ export class MentorshipRequestService {
 
   async createMentorshipRequest(
     mentorshipRequest: MentorshipRequest,
+    menteeId: number,
   ): Promise<void> {
     const user = await User.findAll();
-    mentorshipRequest.menteeId = user[0].id;
+    mentorshipRequest.menteeId = menteeId;
     mentorshipRequest.requestStatus = RequestStatus.PENDING;
-    // TODO: Replace with the actual logged in menteeId
     await MentorshipRequest.create(mentorshipRequest);
   }
 
