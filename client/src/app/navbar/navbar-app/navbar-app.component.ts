@@ -62,12 +62,12 @@ export class NavbarAppComponent implements OnDestroy {
     this.mentor$ = this.userService.getLoggedInMentorAsObservable().pipe(
       tap((user) => {
         if (user) {
-          const timerObservable = timer(0, 10 * 1000)
-            .pipe(concatMap(() => this.requestMentorshipService.getRequests()))
-            .pipe(share());
-
-          timerObservable
-            .pipe(takeUntil(this.unsubscribe))
+          timer(0, 10 * 1000)
+            .pipe(
+              concatMap(() => this.requestMentorshipService.getRequests()),
+              share(),
+              takeUntil(this.unsubscribe)
+            )
             .subscribe((requests) => {
               this.requests = requests;
               this.length = requests.length;
