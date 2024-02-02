@@ -88,10 +88,8 @@ export class NavbarAppComponent {
   }
 
   logout() {
-    this.spinnerService.show();
     this.authService.logOut().subscribe(() => {
       this.router.navigate(['/login']);
-      this.spinnerService.hide();
     });
   }
 
