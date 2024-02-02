@@ -28,7 +28,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MentorDetailsModalComponent } from './mentor-details-modal/mentor-details-modal.component';
 import { UserModalComponent } from './components/user-modal/user-modal/user-modal.component';
 import { MentorshipRequestComponent } from './mentorship-request/mentorship-request-response';
-import { RegistrationComponent } from './components/registration/registration.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MentorshipRequestModalComponent } from './components/mentorship-request-modal/mentorship-request-modal.component';
@@ -48,7 +47,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MentorDetailsModalComponent,
     UserModalComponent,
     MentorshipRequestComponent,
-    RegistrationComponent,
     MentorshipRequestModalComponent,
     AdviceWallComponent,
   ],
