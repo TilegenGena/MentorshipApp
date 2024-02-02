@@ -37,4 +37,7 @@ export class MentorshipResponse extends Model<MentorshipResponse> {
     allowNull: true,
   })
   responseStatus: MentorshipResponseDecision;
+
+  @Column({ type: DataType.BOOLEAN, allowNull: true })
+  response_seen_by_value: boolean;
 }

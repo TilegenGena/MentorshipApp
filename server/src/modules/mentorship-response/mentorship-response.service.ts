@@ -1,29 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { MentorshipResponseDTOGet } from './mentorship-response';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   MentorshipRequest,
   RequestStatus,
 } from '../mentorship-request/mentorship-request.model';
-import {
-  MentorshipResponse,
-  MentorshipResponseDecision,
-} from './mentorship-response.model';
+import { MentorshipResponse } from './mentorship-response.model';
+import { User } from '../user/user.model';
 
 @Injectable()
 export class MentorshipResponseService {
-  async getResponsesForMentee(
-    menteeId: number,
-  ): Promise<MentorshipResponseDTOGet[] | null> {
-    const request = await MentorshipRequest.findAll({
-      where: { requestMessage: RequestStatus.PENDING, menteeId },
-      include: [{ model: MentorshipResponse, as: 'mentorshipResponse' }],
+  async getResponsesForMentee(menteeId: number): Promise<any> {
+    const requests = await MentorshipRequest.findAll({
+      where: { requestStatus: RequestStatus.RESOLVED, menteeId },
+      include: [
+        { model: MentorshipResponse, as: 'mentorshipResponse' },
+        { model: User, as: 'mentor' },
+      ],
     });
-    const responses = request.map(
-      (mentorshipResponses) => mentorshipResponses.mentorshipResponse,
+
+    const mentorshipResponses = requests.map((mentorshipRequest) => ({
+      response: mentorshipRequest.mentorshipResponse,
+      mentor: mentorshipRequest.mentor,
+    }));
+
+    const unseenResponses = mentorshipResponses.filter(
+      (item) => !item.response?.response_seen_by_value,
     );
-    return responses.filter(
-      (responses) =>
-        responses.responseStatus == MentorshipResponseDecision.PENDING,
-    );
+
+    return unseenResponses;
+  }
+
+  async setResponseStatusAsSeenByMentee(responseId: number): Promise<void> {
+    const response = await MentorshipResponse.findOne({
+      where: { id: responseId },
+    });
+    if (response) {
+      response.response_seen_by_value = true;
+      await response.save();
+    } else {
+      throw new NotFoundException();
+    }
   }
 }

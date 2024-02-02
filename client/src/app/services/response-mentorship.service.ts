@@ -10,9 +10,16 @@ import { MentorshipResponseDTOGet } from '../interfaces/metorship-response';
 export class ResponseMentorshipService {
   constructor(private httpService: HttpClient) {}
 
-  getResponse(menteeId: number): Observable<MentorshipResponseDTOGet[]> {
+  getResponse(): Observable<MentorshipResponseDTOGet[]> {
     return this.httpService.get<MentorshipResponseDTOGet[]>(
-      `mentorship-request/get-responses-for-mentee/${menteeId}`
+      'mentorship-response/get-responses-for-mentee'
+    );
+  }
+
+  setResponseAsSeen(responseId: number): Observable<any> {
+    return this.httpService.post(
+      `mentorship-response/set-response-as-seen/${responseId}`,
+      {}
     );
   }
 }

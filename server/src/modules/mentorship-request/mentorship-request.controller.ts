@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { MentorshipRequestService } from './mentorship-request.service';
 import { MentorshipRequestGetDTO } from './mentorship-request';
 import { MentorshipRequest } from './mentorship-request.model';
+import { Request as RequestType } from 'express';
 
 @Controller('mentorship-request')
 export class MentorshipRequestController {
@@ -9,17 +17,25 @@ export class MentorshipRequestController {
 
   @Post('')
   async createMentorshipReques(
+    @Request() req: RequestType,
     @Body() mentorshipRequestData: MentorshipRequest,
   ): Promise<void> {
+    if (!req.user) {
+      throw new UnauthorizedException();
+    }
     await this.mentorshipRequestService.createMentorshipRequest(
       mentorshipRequestData,
+      req.user.id,
     );
   }
 
-  @Get('requests/:mentorId')
+  @Get('requests')
   getNewMentorshipRequests(
-    @Param('mentorId') mentorId: number,
+    @Request() req: RequestType,
   ): Promise<MentorshipRequestGetDTO[] | null> {
-    return this.mentorshipRequestService.getRequestsForMentor(mentorId);
+    if (!req.user) {
+      throw new UnauthorizedException();
+    }
+    return this.mentorshipRequestService.getRequestsForMentor(req.user.id);
   }
 }

@@ -21,15 +21,22 @@ export class RequestMentorshipService {
     );
   }
 
-  getRequest(mentorId: number): Observable<MentorshipRequestGetDTO[]> {
+  getRequests(): Observable<MentorshipRequestGetDTO[]> {
     return this.httpService.get<MentorshipRequestGetDTO[]>(
-      `mentorship-request/requests/${mentorId}`
+      `mentorship-request/requests`
     );
   }
 
   acceptRequest(requestId: number): Observable<MentorshipRequestCreateDTO> {
     return this.httpService.post<MentorshipRequestCreateDTO>(
       `mentorship/accept`,
+      { requestId }
+    );
+  }
+
+  declineRequest(requestId: number): Observable<MentorshipRequestCreateDTO> {
+    return this.httpService.post<MentorshipRequestCreateDTO>(
+      `mentorship/decline`,
       { requestId }
     );
   }
