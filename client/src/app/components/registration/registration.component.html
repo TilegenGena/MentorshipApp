@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row justify-content-md-center">
       <div class="col-md-8 mb-3">
-        <h2 class="text-center mb-4">User Registration</h2>
+        <h2 class="text-center mb-3">User Registration</h2>
         <p class="lead text-center">
           Fill out the form below to create an account.
         </p>
@@ -152,13 +152,22 @@
                 </div>
               </div>
             </fieldset>
-            <button
-              [disabled]="!registrationForm.valid"
-              type="submit"
-              class="btn btn-success"
-            >
-              Sign up
-            </button>
+            <div class="action-btn">
+              <div>
+                <button
+                  [disabled]="!registrationForm.valid"
+                  type="submit"
+                  class="btn btn-success"
+                >
+                  Sign up
+                </button>
+              </div>
+              <div class="nav">
+                <p class="text-center">
+                  Alredy have account? <a routerLink="/login">Login</a>
+                </p>
+              </div>
+            </div>
             <ngx-spinner
               bdColor="rgba(0, 0, 0, .38)"
               size="large"
