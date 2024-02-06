@@ -4,7 +4,7 @@
     type="button"
     class="btn-close"
     aria-label="Close"
-    (click)="activeModal.dismiss('Cross click')"
+    (click)="activeModal.dismiss()"
   ></button>
 </div>
 <ng-container *ngFor="let response of responses">
@@ -21,7 +21,7 @@
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="activeModal.close('Close click')"
+      (click)="activeModal.close()"
     >
       Close
     </button>
@@ -42,7 +42,7 @@
     <button
       type="button"
       class="btn btn-outline-dark"
-      (click)="activeModal.close('Close click')"
+      (click)="activeModal.close()"
     >
       Close
     </button>

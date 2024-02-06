@@ -19,7 +19,7 @@ export class MentorshipResponseModalComponent {
     this.responseMentorshipService
       .setResponseAsSeen(responseId)
       .subscribe(() => {
-        this.activeModal.close();
+        this.activeModal.close(responseId);
       });
   }
 }

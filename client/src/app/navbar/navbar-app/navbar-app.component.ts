@@ -140,9 +140,11 @@ export class NavbarAppComponent implements OnDestroy {
     );
     modalRef.componentInstance.responses = this.responses;
     modalRef.componentInstance.responseLength = this.responsesLength;
-    modalRef.result.then(() => {
-      this.responses = [];
-      this.responsesLength = 0;
+    modalRef.result.then((response) => {
+      if (response) {
+        this.responses = [];
+        this.responsesLength = 0;
+      }
     });
   }
 
