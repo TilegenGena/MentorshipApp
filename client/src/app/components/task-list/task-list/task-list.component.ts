@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TaskCreateDTO, TaskUpdateDTO } from 'src/app/interfaces/task';
 import { TaskDTO } from 'src/app/interfaces/task';
 import { TaskService } from 'src/app/services/task.service';
 import { TaskModalComponent } from '../../task-modal/task-modal/task-modal.component';
@@ -72,7 +73,7 @@ export class TaskListComponent implements OnInit {
       keyboard: false,
     });
     modalRef.componentInstance.task = task;
-    modalRef.result.then((value) => {
+    modalRef.result.then((value: TaskUpdateDTO) => {
       if (value) {
         this.taskService.editTask(value).subscribe();
       }
@@ -84,7 +85,7 @@ export class TaskListComponent implements OnInit {
       backdrop: 'static',
       keyboard: false,
     });
-    modalRef.result.then(async (result) => {
+    modalRef.result.then(async (result: TaskCreateDTO) => {
       if (result) {
         this.taskService.createTask(result).subscribe();
       }

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task } from './task.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { TaskDTO } from './task.interface';
+import { TaskCreateDTO, TaskUpdateDTO } from './task.interface';
 
 @Injectable()
 export class TaskService {
@@ -10,16 +10,16 @@ export class TaskService {
     private readonly taskModel: typeof Task,
   ) {}
 
-  async createTask(taskData: Task, userId: number): Promise<Task> {
+  async createTask(taskData: TaskCreateDTO, userId: number): Promise<Task> {
     taskData.menteeId = userId;
     taskData.createdAt = new Date();
     taskData.updatedAt = new Date();
     // TODO: Resolve archived
     taskData.archived = false;
-    return this.taskModel.create(taskData);
+    return this.taskModel.create({ ...taskData });
   }
 
-  async getAllTasks(menteeId: number): Promise<TaskDTO[]> {
+  async getAllTasks(menteeId: number): Promise<Task[]> {
     return this.taskModel.findAll({ where: { menteeId, archived: false } });
   }
 
@@ -31,7 +31,7 @@ export class TaskService {
     return task;
   }
 
-  async updateTask(id: number, taskData: Task): Promise<Task> {
+  async updateTask(id: number, taskData: TaskUpdateDTO): Promise<Task> {
     await this.taskModel.update(taskData, {
       where: { id },
     });

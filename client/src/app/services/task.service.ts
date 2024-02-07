@@ -9,6 +9,7 @@ import {
   shareReplay,
   tap,
 } from 'rxjs';
+import { TaskCreateDTO, TaskUpdateDTO } from '../interfaces/task';
 import { TaskDTO } from '../interfaces/task';
 
 @Injectable({
@@ -60,13 +61,13 @@ export class TaskService {
     return this.httpService.get<TaskDTO[]>(`task/${id}`);
   }
 
-  createTask(param: TaskDTO): Observable<TaskDTO[]> {
+  createTask(param: TaskCreateDTO): Observable<TaskDTO[]> {
     return this.httpService
       .post<TaskDTO[]>('task', param)
       .pipe(tap((tasks) => this.tasksForMenteeSubject$.next(tasks)));
   }
 
-  editTask(param: TaskDTO): Observable<TaskDTO[]> {
+  editTask(param: TaskUpdateDTO): Observable<TaskDTO[]> {
     return this.httpService
       .put<TaskDTO[]>(`task/${param.id}`, param)
       .pipe(tap((tasks) => this.tasksForMenteeSubject$.next(tasks)));

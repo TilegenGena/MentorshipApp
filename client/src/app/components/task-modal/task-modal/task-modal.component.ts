@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { TaskDTO } from 'src/app/interfaces/task';
-import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-task-modal',
