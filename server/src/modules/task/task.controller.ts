@@ -10,8 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
-import { Task } from './task.model';
-import { TaskDTO as TaskInterface } from './task.interface';
+import { TaskCreateDTO, TaskDTO, TaskUpdateDTO } from './task.interface';
 import { Request as RequestType } from 'express';
 
 @Controller('task')
@@ -19,7 +18,7 @@ export class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Get('')
-  async getTask(@Request() req: RequestType): Promise<TaskInterface[]> {
+  async getTask(@Request() req: RequestType): Promise<TaskDTO[]> {
     if (req.user) {
       const userId = req.user?.id;
       return this.taskService.getAllTasks(userId);
@@ -31,20 +30,20 @@ export class TaskController {
   @Get(':menteeId')
   async getTaskForMentee(
     @Param('menteeId') menteeId: number,
-  ): Promise<TaskInterface[]> {
+  ): Promise<TaskDTO[]> {
     return this.taskService.getAllTasks(menteeId);
   }
 
   @Get(':id')
-  async getTaskById(@Param('id') id: number): Promise<Task> {
+  async getTaskById(@Param('id') id: number): Promise<TaskDTO> {
     return this.taskService.getTaskById(id);
   }
 
   @Post('')
   async createTask(
     @Request() req: RequestType,
-    @Body() taskData: Task,
-  ): Promise<TaskInterface[]> {
+    @Body() taskData: TaskCreateDTO,
+  ): Promise<TaskDTO[]> {
     const userId = req.user?.id;
     if (userId) {
       await this.taskService.createTask(taskData, userId);
@@ -58,8 +57,8 @@ export class TaskController {
   async updateTask(
     @Request() req: RequestType,
     @Param('id') id: number,
-    @Body() taskData: Task,
-  ): Promise<TaskInterface[]> {
+    @Body() taskData: TaskUpdateDTO,
+  ): Promise<TaskDTO[]> {
     if (req.user) {
       await this.taskService.updateTask(id, taskData);
       return this.taskService.getAllTasks(req.user.id);
@@ -72,7 +71,7 @@ export class TaskController {
   async deleteTask(
     @Request() req: RequestType,
     @Param('id') id: number,
-  ): Promise<TaskInterface[]> {
+  ): Promise<TaskDTO[]> {
     if (req.user) {
       await this.taskService.deleteTask(id);
       return this.taskService.getAllTasks(req.user.id);

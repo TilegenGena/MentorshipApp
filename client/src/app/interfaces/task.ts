@@ -1,10 +1,29 @@
+// Keep in sync with server task.interface.ts
+
 export interface TaskDTO {
   id: number;
   title: string;
   menteeId: number;
   description: string;
   status: string;
-  dueDate: Date;
+  dueDate: string;
+}
+
+export interface TaskCreateDTO {
+  title: string;
+  menteeId: number;
+  description: string;
+  status: string;
+  dueDate: string;
+  archived: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface TaskUpdateDTO {
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  dueDate: string;
 }

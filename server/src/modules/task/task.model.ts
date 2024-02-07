@@ -18,7 +18,7 @@ export enum TaskStatus {
   tableName: 'task',
   timestamps: true,
 })
-export class Task extends Model<Task> {
+export class Task extends Model {
   @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true })
   id: number;
 
@@ -42,7 +42,7 @@ export class Task extends Model<Task> {
   status: TaskStatus;
 
   @Column({ type: DataType.DATE, allowNull: false })
-  dueDate: Date;
+  dueDate: string;
 
   @Column({ type: DataType.BOOLEAN, allowNull: true })
   archived: boolean;
