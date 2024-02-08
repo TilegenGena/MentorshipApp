@@ -6,7 +6,16 @@
   </div>
 
   <div class="container" *ngIf="tasks$ | async as tasks" style="padding: 10px">
-    <div class="row">
+    <div *ngIf="tasks.length == 0">
+      <div class="no-tasks">
+        <p>There are no tasks yet</p>
+        <img
+          src="../../../../assets/folder-management.png"
+          alt="No tasks available"
+        />
+      </div>
+    </div>
+    <div *ngIf="tasks.length > 0" class="row">
       <div *ngFor="let task of tasks" class="col-sm-3">
         <div
           class="card mb-3"
@@ -54,6 +63,15 @@
       *ngIf="tasksForMentor$ | async as tasks"
       style="padding: 10px"
     >
+      <div *ngIf="tasks.length == 0">
+        <div class="no-tasks">
+          <p>Mentee does't have tasks yet</p>
+          <img
+            src="../../../../assets/folder-management.png"
+            alt="No tasks available"
+          />
+        </div>
+      </div>
       <div class="row">
         <div *ngFor="let task of tasks" class="col-sm-3">
           <div
