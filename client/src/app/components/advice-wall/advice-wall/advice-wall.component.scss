@@ -1,12 +1,14 @@
 .coming-soon-container {
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 84vh;
-  }
-
-  h1 {
-    color: #0B2149;
-    font-size: 4em;
-  }
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+    p {
+      color: #0B2149;
+      font-size: 3em;
+    }
+    img{
+      width: 40%;
+    }
+}

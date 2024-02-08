@@ -10,3 +10,17 @@
   .fixed-height-card {
     height: 250;
   }
+  
+  .no-tasks{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    p{
+      color: #0B2149;
+      font-size: 3em;
+    }
+    img{
+      width: 40%;
+    }
+  }
