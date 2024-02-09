@@ -134,10 +134,10 @@ export class NavbarAppComponent implements OnDestroy {
   }
 
   seeResponse() {
-    const modalRef = this.ModalService.open(
-      MentorshipResponseModalComponent,
-      {}
-    );
+    const modalRef = this.ModalService.open(MentorshipResponseModalComponent, {
+      backdrop: 'static',
+      keyboard: false,
+    });
     modalRef.componentInstance.responses = this.responses;
     modalRef.componentInstance.responseLength = this.responsesLength;
     modalRef.result.then((response) => {

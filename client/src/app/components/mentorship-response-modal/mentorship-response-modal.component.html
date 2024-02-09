@@ -4,16 +4,17 @@
     type="button"
     class="btn-close"
     aria-label="Close"
-    (click)="activeModal.dismiss()"
+    (click)="activeModal.close()"
   ></button>
 </div>
 <ng-container *ngFor="let response of responses">
   <div class="modal-body">
     <div *ngIf="response">
-      <p>Hello!</p>
-      {{ response?.mentor?.firstName + " " + response?.mentor?.lastName }}
-      <b>{{ response?.response?.responseStatus + " " }}</b>
-      <p>your request!</p>
+      <p>
+        {{ response?.mentor?.firstName + " " + response?.mentor?.lastName }}
+        <b>{{ response?.response?.responseStatus + " " }}</b>
+        your request!
+      </p>
     </div>
   </div>
 
