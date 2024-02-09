@@ -11,13 +11,14 @@
   <form [formGroup]="requestForm" (ngSubmit)="submitForm()">
     <div class="form-group">
       <label for="request-message">Request message: </label>
-      <input
+      <textarea
         type="text"
         id="request-message"
         class="form-control"
         formControlName="requestMessage"
         name="request-message"
-      />
+      >
+      </textarea>
       <div
         *ngIf="
           requestForm.controls['requestMessage'].invalid &&

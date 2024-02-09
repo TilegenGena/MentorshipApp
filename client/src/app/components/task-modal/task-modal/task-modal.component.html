@@ -25,12 +25,13 @@
       Title is required.
     </div>
     <label for="description">Description</label>
-    <input
+    <textarea
       type="text"
       id="description"
       class="form-control"
       formControlName="description"
-    />
+    >
+    </textarea>
     <div
       *ngIf="
         taskForm.controls['description'].invalid &&
